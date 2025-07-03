@@ -1,0 +1,46 @@
+name: 'govulncheck-pr'
+description: 'Run govulncheck to scan for Go vulnerabilities and create a PR if any are found.'
+inputs: {}
+outputs: {}
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.21'
+
+    - name: Install govulncheck
+      run: go install golang.org/x/vuln/cmd/govulncheck@latest
+      shell: bash
+
+    - name: Run govulncheck
+      run: govulncheck -json ./... > govuln.json
+      shell: bash
+
+    - name: Check for vulnerabilities
+      id: vulncheck
+      run: |
+        count=$(jq '.vulns | length' govuln.json)
+        echo "vuln_count=$count" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Create PR if vulnerable
+      if: steps.vulncheck.outputs.vuln_count != '0'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        branch="govulncheck-fix-$(date +%Y%m%d)"
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git checkout -b "$branch"
+        mkdir -p .govulncheck
+        cp govuln.json .govulncheck/latest.json
+        git add .govulncheck/latest.json
+        git commit -m "chore: add govulncheck report"
+        git push origin "$branch"
+        gh pr create --base main \
+          --head "$branch" \
+          --title "⚠️ govulncheck found reachable vulnerabilities" \
+          --body "This PR contains a report from [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck). Please review and take action."
+      shell: bash
