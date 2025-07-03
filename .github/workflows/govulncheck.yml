@@ -20,6 +20,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run govulncheck-pr action
-        uses: your-org/csgda-platform-actions/workflows/govulncheck-pr@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
