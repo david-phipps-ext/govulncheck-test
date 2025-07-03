@@ -1,6 +1,9 @@
 name: 'govulncheck-pr'
 description: 'Run govulncheck to scan for Go vulnerabilities and create a PR if any are found.'
-inputs: {}
+inputs:
+  github-token:
+    description: 'GitHub token for creating PRs'
+    required: true
 outputs: {}
 runs:
   using: "composite"
@@ -32,7 +35,7 @@ runs:
     - name: Create PR if vulnerable
       if: steps.vulncheck.outputs.vuln_count != '0'
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
         branch="govulncheck-fix-$(date +%Y%m%d)"
         git config user.name "github-actions"
