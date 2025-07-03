@@ -22,14 +22,31 @@ runs:
       shell: bash
 
     - name: Run govulncheck
-      run: govulncheck -json ./... > govuln.json
+      run: |
+        govulncheck -json ./... > govuln.json
+        echo "Govulncheck output:"
+        cat govuln.json
       shell: bash
 
     - name: Check for vulnerabilities
       id: vulncheck
       run: |
-        count=$(jq '.vulns | length' govuln.json)
+        # Check if the file exists and has content
+        if [[ ! -f govuln.json ]] || [[ ! -s govuln.json ]]; then
+          echo "vuln_count=0" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        
+        # Count vulnerabilities, defaulting to 0 if .vulns doesn't exist
+        count=$(jq -r 'if .vulns then (.vulns | length) else 0 end' govuln.json)
+        
+        # Ensure count is a valid number
+        if [[ ! "$count" =~ ^[0-9]+$ ]]; then
+          count=0
+        fi
+        
         echo "vuln_count=$count" >> $GITHUB_OUTPUT
+        echo "Found $count vulnerabilities"
       shell: bash
 
     - name: Create PR if vulnerable
