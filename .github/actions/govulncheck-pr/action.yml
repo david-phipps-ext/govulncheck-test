@@ -51,8 +51,8 @@ runs:
           exit 0
         fi
         
-        # Count vulnerabilities, defaulting to 0 if .vulns doesn't exist
-        count=$(jq -r 'if .vulns then (.vulns | length) else 0 end' govuln.json)
+        # Count vulnerabilities using the correct JSON structure
+        count=$(jq -s '[.[] | select(.finding != null)] | length' govuln.json)
         
         # Ensure count is a valid number
         if [[ ! "$count" =~ ^[0-9]+$ ]]; then
@@ -78,19 +78,17 @@ runs:
         cp govuln.json .govulncheck/latest.json
         
         # Generate a summary for the PR body
-        vuln_summary=$(jq -r '
-          if .vulns then 
-            (.vulns | map("- **" + .osv.id + "**: " + .osv.summary) | join("\n"))
-          else 
-            "No vulnerabilities found in latest scan."
-          end
+        vuln_summary=$(jq -s -r '
+          [.[] | select(.finding != null)] | 
+          map("- **" + .finding.osv + "**: Vulnerability in " + (.finding.trace[0].module // "unknown module")) | 
+          join("\n")
         ' govuln.json)
         
         # Get current date and other details for the PR body
         current_date=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-        scanner_version=$(jq -r '.config.scanner_version // "unknown"' govuln.json)
-        db_last_modified=$(jq -r '.config.db_last_modified // "unknown"' govuln.json)
-        vuln_count=$(jq -r 'if .vulns then (.vulns | length) else 0 end' govuln.json)
+        scanner_version=$(jq -s -r '[.[] | select(.config != null)][0].config.scanner_version // "unknown"' govuln.json)
+        db_last_modified=$(jq -s -r '[.[] | select(.config != null)][0].config.db_last_modified // "unknown"' govuln.json)
+        vuln_count=$(jq -s '[.[] | select(.finding != null)] | length' govuln.json)
         
         # Create PR body with vulnerability details
         cat > pr_body.md << EOF
