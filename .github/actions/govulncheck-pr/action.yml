@@ -114,24 +114,58 @@ runs:
         - **Database Last Modified**: $db_last_modified
         EOF
         
-        # Try to create and push branch
-        git checkout -b "$branch"
-        git add .govulncheck/latest.json
-        git commit -m "chore: add govulncheck vulnerability report
-
-        This commit adds the latest govulncheck scan results.
-        Found $vuln_count vulnerabilities."
-        
-        # Use git push with the token explicitly in the URL
-        repo_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        git remote set-url origin "$repo_url"
-        git push origin "$branch"
-        
         # Check if there's already an open PR for govulncheck fixes
         existing_pr=$(gh pr list --state open --search "govulncheck found" --json number,title,headRefName --jq '.[0].number // empty' 2>/dev/null || echo "")
         
         if [[ -n "$existing_pr" ]]; then
           echo "Found existing open PR #$existing_pr for vulnerability fixes"
+          
+          # Get the existing PR's branch name
+          existing_branch=$(gh pr list --state open --search "govulncheck found" --json headRefName --jq '.[0].headRefName // empty' 2>/dev/null || echo "")
+          
+          if [[ -n "$existing_branch" ]]; then
+            echo "Using existing branch: $existing_branch"
+            
+            # Switch to existing branch and update it
+            git fetch origin "$existing_branch"
+            git checkout -B "$existing_branch" "origin/$existing_branch"
+            
+            # Update the vulnerability report
+            mkdir -p .govulncheck
+            cp govuln.json .govulncheck/latest.json
+            
+            # Check if there are any changes to commit
+            if git diff --quiet && git diff --cached --quiet; then
+              echo "No changes to vulnerability report, updating PR anyway"
+            else
+              git add .govulncheck/latest.json
+              git commit -m "chore: update govulncheck vulnerability report
+
+              Updated vulnerability scan results.
+              Found $vuln_count vulnerabilities on $current_date."
+              
+              # Push updates to existing branch
+              repo_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+              git remote set-url origin "$repo_url"
+              git push origin "$existing_branch"
+            fi
+            
+            # Use existing branch name for the rest of the process
+            branch="$existing_branch"
+          else
+            echo "Could not determine existing branch name, creating new branch"
+            # Fall back to creating new branch (original logic)
+            git checkout -b "$branch"
+            git add .govulncheck/latest.json
+            git commit -m "chore: add govulncheck vulnerability report
+
+            This commit adds the latest govulncheck scan results.
+            Found $vuln_count vulnerabilities."
+            
+            repo_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+            git remote set-url origin "$repo_url"
+            git push origin "$branch"
+          fi
           
           # Update the existing PR with new information
           cat > update_body.md << EOF
@@ -139,14 +173,14 @@ runs:
         
         This PR has been updated with the latest [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) scan results.
         
-        **Latest scan branch**: \`$branch\`
+        **Branch**: \`$branch\`
         
         ### Vulnerabilities Found:
         
         $vuln_summary
         
         ### Next Steps:
-        1. Review the latest vulnerability report in branch \`$branch\` at \`.govulncheck/latest.json\`
+        1. Review the latest vulnerability report in \`.govulncheck/latest.json\`
         2. Compare with previous scan results to see if new vulnerabilities were introduced
         3. Update the affected dependencies to secure versions
         4. Run \`govulncheck ./...\` locally to verify fixes
@@ -156,12 +190,11 @@ runs:
         - **Scan Date**: $current_date
         - **Scanner Version**: $scanner_version
         - **Database Last Modified**: $db_last_modified
-        - **Latest Branch**: $branch
         - **Vulnerability Count**: $vuln_count
         
         ---
         
-        **Note**: Multiple branches may exist for different scan runs. This PR tracks the overall vulnerability status.
+        **Note**: This PR and branch are updated with each scan to track the current vulnerability status.
         EOF
           
           # Update existing PR
@@ -170,31 +203,42 @@ runs:
             --body-file update_body.md
           
           # Add a comment about the new scan
-          echo "🔄 **New scan completed**: Branch \`$branch\` created with $vuln_count vulnerabilities detected on $current_date" | \
+          echo "🔄 **Scan updated**: $vuln_count vulnerabilities detected on $current_date" | \
             gh pr comment "$existing_pr" --body-file -
           
-          echo "Updated existing PR #$existing_pr with latest scan results"
+          echo "Updated existing PR #$existing_pr and branch $branch with latest scan results"
           
         else
-          echo "No existing PR found, creating new one..."
-        
-        # Try to create PR, fallback to issue if PR creation is not allowed
-        if gh pr create \
-          --base "${{ inputs.base-branch }}" \
-          --head "$branch" \
-          --title "🚨 Security: govulncheck found $vuln_count reachable vulnerabilities" \
-          --body-file pr_body.md 2>/dev/null; then
-          echo "Pull request created successfully"
+          echo "No existing PR found, creating new branch and PR..."
           
-          # Try to add labels (ignore failures if labels don't exist)
-          gh pr edit "$branch" --add-label "security" 2>/dev/null || echo "Could not add 'security' label (label may not exist)"
-          gh pr edit "$branch" --add-label "vulnerability" 2>/dev/null || echo "Could not add 'vulnerability' label (label may not exist)" 
-          gh pr edit "$branch" --add-label "automated" 2>/dev/null || echo "Could not add 'automated' label (label may not exist)"
-        else
-          echo "PR creation failed, creating an issue instead..."
+          # Create new branch and push (original logic for new PRs)
+          git checkout -b "$branch"
+          git add .govulncheck/latest.json
+          git commit -m "chore: add govulncheck vulnerability report
+
+          This commit adds the latest govulncheck scan results.
+          Found $vuln_count vulnerabilities."
           
-          # Modify the body for an issue format
-          cat > issue_body.md << EOF
+          repo_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git remote set-url origin "$repo_url"
+          git push origin "$branch"
+          # Try to create PR, fallback to issue if PR creation is not allowed
+          if gh pr create \
+            --base "${{ inputs.base-branch }}" \
+            --head "$branch" \
+            --title "🚨 Security: govulncheck found $vuln_count reachable vulnerabilities" \
+            --body-file pr_body.md 2>/dev/null; then
+            echo "Pull request created successfully"
+            
+            # Try to add labels (ignore failures if labels don't exist)
+            gh pr edit "$branch" --add-label "security" 2>/dev/null || echo "Could not add 'security' label (label may not exist)"
+            gh pr edit "$branch" --add-label "vulnerability" 2>/dev/null || echo "Could not add 'vulnerability' label (label may not exist)" 
+            gh pr edit "$branch" --add-label "automated" 2>/dev/null || echo "Could not add 'automated' label (label may not exist)"
+          else
+            echo "PR creation failed, creating an issue instead..."
+            
+            # Modify the body for an issue format
+            cat > issue_body.md << EOF
         ## 🚨 Vulnerability Scan Report
         
         This issue was automatically created by [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) after detecting reachable vulnerabilities in the codebase.
@@ -222,13 +266,13 @@ runs:
         You can create a pull request manually by visiting:
         https://github.com/\${GITHUB_REPOSITORY}/pull/new/$branch
         EOF
-          
-          # Create an issue instead
-          gh issue create \
-            --title "🚨 Security: govulncheck found $vuln_count reachable vulnerabilities" \
-            --body-file issue_body.md \
-            --label "security,vulnerability,automated" || echo "Issue creation also failed"
-        fi
+            
+            # Create an issue instead
+            gh issue create \
+              --title "🚨 Security: govulncheck found $vuln_count reachable vulnerabilities" \
+              --body-file issue_body.md \
+              --label "security,vulnerability,automated" || echo "Issue creation also failed"
+          fi
         
         fi  # End of the existing PR check
       shell: bash
