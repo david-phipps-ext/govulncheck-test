@@ -126,12 +126,19 @@ runs:
           if [[ -n "$existing_branch" ]]; then
             echo "Using existing branch: $existing_branch"
             
+            # Save the new vulnerability report temporarily
+            cp govuln.json /tmp/govuln-temp.json
+            
+            # Remove any conflicting files before checkout
+            rm -rf .govulncheck 2>/dev/null || true
+            
             # Switch to existing branch and update it
             git fetch origin "$existing_branch"
             git checkout -B "$existing_branch" "origin/$existing_branch"
             
-            # Update the vulnerability report
+            # Restore and update the vulnerability report
             mkdir -p .govulncheck
+            cp /tmp/govuln-temp.json govuln.json
             cp govuln.json .govulncheck/latest.json
             
             # Check if there are any changes to commit
