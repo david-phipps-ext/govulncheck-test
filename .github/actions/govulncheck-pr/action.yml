@@ -69,7 +69,7 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github-token }}
         GH_TOKEN: ${{ inputs.github-token }}
       run: |
-        branch="govulncheck-fix-$(date +%Y%m%d-%H%M%S)"
+        branch="govulncheck-fixes"  # Use consistent branch name
         
         # Configure git with a more permissive approach
         git config --global user.name "github-actions[bot]"
@@ -117,65 +117,50 @@ runs:
         # Check if there's already an open PR for govulncheck fixes
         existing_pr=$(gh pr list --state open --search "govulncheck found" --json number,title,headRefName --jq '.[0].number // empty' 2>/dev/null || echo "")
         
-        if [[ -n "$existing_pr" ]]; then
-          echo "Found existing open PR #$existing_pr for vulnerability fixes"
+        # Check if the branch already exists (locally or remotely)
+        branch_exists=false
+        if git ls-remote --heads origin "$branch" | grep -q "$branch"; then
+          echo "Branch $branch already exists remotely"
+          branch_exists=true
+        fi
+        
+        if [[ -n "$existing_pr" ]] || [[ "$branch_exists" == "true" ]]; then
+          echo "Found existing PR #$existing_pr or branch $branch exists, updating..."
           
-          # Get the existing PR's branch name
-          existing_branch=$(gh pr list --state open --search "govulncheck found" --json headRefName --jq '.[0].headRefName // empty' 2>/dev/null || echo "")
+          # Save the new vulnerability report temporarily
+          cp govuln.json /tmp/govuln-temp.json
           
-          if [[ -n "$existing_branch" ]]; then
-            echo "Using existing branch: $existing_branch"
-            
-            # Save the new vulnerability report temporarily
-            cp govuln.json /tmp/govuln-temp.json
-            
-            # Remove any conflicting files before checkout
-            rm -rf .govulncheck 2>/dev/null || true
-            
-            # Switch to existing branch and update it
-            git fetch origin "$existing_branch"
-            git checkout -B "$existing_branch" "origin/$existing_branch"
-            
-            # Restore and update the vulnerability report
-            mkdir -p .govulncheck
-            cp /tmp/govuln-temp.json govuln.json
-            cp govuln.json .govulncheck/latest.json
-            
-            # Check if there are any changes to commit
-            if git diff --quiet && git diff --cached --quiet; then
-              echo "No changes to vulnerability report, updating PR anyway"
-            else
-              git add .govulncheck/latest.json
-              git commit -m "chore: update govulncheck vulnerability report
-
-              Updated vulnerability scan results.
-              Found $vuln_count vulnerabilities on $current_date."
-              
-              # Push updates to existing branch
-              repo_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-              git remote set-url origin "$repo_url"
-              git push origin "$existing_branch"
-            fi
-            
-            # Use existing branch name for the rest of the process
-            branch="$existing_branch"
+          # Remove any conflicting files before checkout
+          rm -rf .govulncheck 2>/dev/null || true
+          
+          # Fetch and switch to existing branch
+          git fetch origin 2>/dev/null || true
+          if git ls-remote --heads origin "$branch" | grep -q "$branch"; then
+            git checkout -B "$branch" "origin/$branch"
           else
-            echo "Could not determine existing branch name, creating new branch"
-            # Fall back to creating new branch (original logic)
             git checkout -b "$branch"
-            git add .govulncheck/latest.json
-            git commit -m "chore: add govulncheck vulnerability report
-
-            This commit adds the latest govulncheck scan results.
-            Found $vuln_count vulnerabilities."
-            
-            repo_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-            git remote set-url origin "$repo_url"
-            git push origin "$branch"
           fi
           
-          # Update the existing PR with new information
-          cat > update_body.md << EOF
+          # Restore and update the vulnerability report
+          mkdir -p .govulncheck
+          cp /tmp/govuln-temp.json govuln.json
+          cp govuln.json .govulncheck/latest.json
+          
+          # Add and commit changes
+          git add .govulncheck/latest.json
+          git commit -m "chore: update govulncheck vulnerability report
+
+          Updated vulnerability scan results.
+          Found $vuln_count vulnerabilities on $current_date." || echo "No changes to commit"
+          
+          # Push updates to branch
+          repo_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git remote set-url origin "$repo_url"
+          git push origin "$branch"
+          
+          if [[ -n "$existing_pr" ]]; then
+            # Update the existing PR with new information
+            cat > update_body.md << EOF
         ## 🚨 Updated Vulnerability Scan Report
         
         This PR has been updated with the latest [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) scan results.
@@ -203,22 +188,25 @@ runs:
         
         **Note**: This PR and branch are updated with each scan to track the current vulnerability status.
         EOF
-          
-          # Update existing PR
-          gh pr edit "$existing_pr" \
-            --title "🚨 Security: govulncheck found $vuln_count reachable vulnerabilities (Updated)" \
-            --body-file update_body.md
-          
-          # Add a comment about the new scan
-          echo "🔄 **Scan updated**: $vuln_count vulnerabilities detected on $current_date" | \
-            gh pr comment "$existing_pr" --body-file -
-          
-          echo "Updated existing PR #$existing_pr and branch $branch with latest scan results"
+            
+            # Update existing PR
+            gh pr edit "$existing_pr" \
+              --title "🚨 Security: govulncheck found $vuln_count reachable vulnerabilities (Updated)" \
+              --body-file update_body.md
+            
+            # Add a comment about the new scan
+            echo "🔄 **Scan updated**: $vuln_count vulnerabilities detected on $current_date" | \
+              gh pr comment "$existing_pr" --body-file -
+            
+            echo "Updated existing PR #$existing_pr and branch $branch with latest scan results"
+          else
+            echo "Branch exists but no PR found - will create new PR from existing branch"
+          fi
           
         else
-          echo "No existing PR found, creating new branch and PR..."
+          echo "No existing PR or branch found, creating new branch and PR..."
           
-          # Create new branch and push (original logic for new PRs)
+          # Create new branch and push
           git checkout -b "$branch"
           git add .govulncheck/latest.json
           git commit -m "chore: add govulncheck vulnerability report
@@ -229,6 +217,12 @@ runs:
           repo_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git remote set-url origin "$repo_url"
           git push origin "$branch"
+        fi
+        
+        # Create PR if none exists (either new branch or existing branch without PR)
+        if [[ -z "$existing_pr" ]]; then
+        # Create PR if none exists (either new branch or existing branch without PR)
+        if [[ -z "$existing_pr" ]]; then
           # Try to create PR, fallback to issue if PR creation is not allowed
           if gh pr create \
             --base "${{ inputs.base-branch }}" \
@@ -280,6 +274,5 @@ runs:
               --body-file issue_body.md \
               --label "security,vulnerability,automated" || echo "Issue creation also failed"
           fi
-        
-        fi  # End of the existing PR check
+        fi
       shell: bash
