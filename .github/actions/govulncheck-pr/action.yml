@@ -67,11 +67,13 @@ runs:
       if: steps.vulncheck.outputs.vuln_count != '0'
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
+        GH_TOKEN: ${{ inputs.github-token }}
       run: |
         branch="govulncheck-fix-$(date +%Y%m%d-%H%M%S)"
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git checkout -b "$branch"
+        
+        # Configure git with a more permissive approach
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         
         # Create govulncheck directory and save report
         mkdir -p .govulncheck
@@ -112,12 +114,17 @@ runs:
         - **Database Last Modified**: $db_last_modified
         EOF
         
+        # Try to create and push branch
+        git checkout -b "$branch"
         git add .govulncheck/latest.json
         git commit -m "chore: add govulncheck vulnerability report
 
         This commit adds the latest govulncheck scan results.
         Found $vuln_count vulnerabilities."
         
+        # Use git push with the token explicitly in the URL
+        repo_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        git remote set-url origin "$repo_url"
         git push origin "$branch"
         
         # Create PR with detailed body
