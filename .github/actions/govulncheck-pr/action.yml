@@ -86,35 +86,39 @@ runs:
           end
         ' govuln.json)
         
+        # Get current date and other details for the PR body
+        current_date=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+        scanner_version=$(jq -r '.config.scanner_version // "unknown"' govuln.json)
+        db_last_modified=$(jq -r '.config.db_last_modified // "unknown"' govuln.json)
+        vuln_count=$(jq -r 'if .vulns then (.vulns | length) else 0 end' govuln.json)
+        
         # Create PR body with vulnerability details
-        cat > pr_body.md << 'EOF'
+        cat > pr_body.md << EOF
         ## 🚨 Vulnerability Scan Report
         
         This PR was automatically created by [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) after detecting reachable vulnerabilities in the codebase.
         
         ### Vulnerabilities Found:
         
-        EOF
-        echo "$vuln_summary" >> pr_body.md
-        cat >> pr_body.md << 'EOF'
+        $vuln_summary
         
         ### Next Steps:
-        1. Review the vulnerability report in `.govulncheck/latest.json`
+        1. Review the vulnerability report in \`.govulncheck/latest.json\`
         2. Update the affected dependencies to secure versions
-        3. Run `govulncheck ./...` locally to verify fixes
+        3. Run \`govulncheck ./...\` locally to verify fixes
         4. Close this PR once vulnerabilities are resolved
         
         ### Scan Details:
+        - **Scan Date**: $current_date
+        - **Scanner Version**: $scanner_version
+        - **Database Last Modified**: $db_last_modified
         EOF
-        echo "- **Scan Date**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> pr_body.md
-        echo "- **Scanner Version**: $(jq -r '.config.scanner_version // "unknown"' govuln.json)" >> pr_body.md
-        echo "- **Database Last Modified**: $(jq -r '.config.db_last_modified // "unknown"' govuln.json)" >> pr_body.md
         
         git add .govulncheck/latest.json
         git commit -m "chore: add govulncheck vulnerability report
 
         This commit adds the latest govulncheck scan results.
-        Found $(jq -r 'if .vulns then (.vulns | length) else 0 end' govuln.json) vulnerabilities."
+        Found $vuln_count vulnerabilities."
         
         git push origin "$branch"
         
@@ -122,7 +126,7 @@ runs:
         gh pr create \
           --base "${{ inputs.base-branch }}" \
           --head "$branch" \
-          --title "🚨 Security: govulncheck found $(jq -r 'if .vulns then (.vulns | length) else 0 end' govuln.json) reachable vulnerabilities" \
+          --title "🚨 Security: govulncheck found $vuln_count reachable vulnerabilities" \
           --body-file pr_body.md \
           --label "security,vulnerability,automated"
       shell: bash
