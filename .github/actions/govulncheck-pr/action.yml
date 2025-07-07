@@ -221,8 +221,6 @@ runs:
         
         # Create PR if none exists (either new branch or existing branch without PR)
         if [[ -z "$existing_pr" ]]; then
-        # Create PR if none exists (either new branch or existing branch without PR)
-        if [[ -z "$existing_pr" ]]; then
           # Try to create PR, fallback to issue if PR creation is not allowed
           if gh pr create \
             --base "${{ inputs.base-branch }}" \
