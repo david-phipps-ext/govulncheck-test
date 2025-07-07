@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run govulncheck-pr action
-        uses: ./.github/workflows/govulncheck-pr
+        uses: ./.github/actions/govulncheck-pr
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
