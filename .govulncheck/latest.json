@@ -88,6 +88,1419 @@
 {
   "osv": {
     "schema_version": "1.3.1",
+    "id": "GO-2022-0493",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2022-07-15T23:30:12Z",
+    "aliases": [
+      "CVE-2022-29526",
+      "GHSA-p782-xgp4-8hr8"
+    ],
+    "summary": "Incorrect privilege reporting in syscall and golang.org/x/sys/unix",
+    "details": "When called with a non-zero flags parameter, the Faccessat function can incorrectly report that a file is accessible.",
+    "affected": [
+      {
+        "package": {
+          "name": "stdlib",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.17.10"
+              },
+              {
+                "introduced": "1.18.0-0"
+              },
+              {
+                "fixed": "1.18.2"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "syscall",
+              "symbols": [
+                "Faccessat"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "package": {
+          "name": "golang.org/x/sys",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.0.0-20220412211240-33da011f77ad"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/sys/unix",
+              "symbols": [
+                "Faccessat"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/399539"
+      },
+      {
+        "type": "REPORT",
+        "url": "https://go.dev/issue/52313"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/400074"
+      },
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/g/golang-announce/c/Y5qrqw_lWdU"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Joël Gähwiler (@256dpi)"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2022-0493",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2020-0036",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2021-04-14T20:04:52Z",
+    "aliases": [
+      "CVE-2019-11254",
+      "GHSA-wxc4-f4m6-wwqv"
+    ],
+    "summary": "Excessive resource consumption in YAML parsing in gopkg.in/yaml.v2",
+    "details": "Due to unbounded aliasing, a crafted YAML file can cause consumption of significant system resources. If parsing user supplied input, this may be used as a denial of service vector.",
+    "affected": [
+      {
+        "package": {
+          "name": "gopkg.in/yaml.v2",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "2.2.8"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "gopkg.in/yaml.v2",
+              "symbols": [
+                "Decoder.Decode",
+                "Unmarshal",
+                "UnmarshalStrict",
+                "yaml_parser_decrease_flow_level",
+                "yaml_parser_fetch_more_tokens",
+                "yaml_parser_fetch_stream_start",
+                "yaml_parser_fetch_value",
+                "yaml_parser_remove_simple_key",
+                "yaml_parser_save_simple_key"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "package": {
+          "name": "github.com/go-yaml/yaml",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "github.com/go-yaml/yaml",
+              "symbols": [
+                "Decoder.Decode",
+                "Unmarshal",
+                "UnmarshalStrict",
+                "yaml_parser_decrease_flow_level",
+                "yaml_parser_fetch_more_tokens",
+                "yaml_parser_fetch_stream_start",
+                "yaml_parser_fetch_value",
+                "yaml_parser_remove_simple_key",
+                "yaml_parser_save_simple_key"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://github.com/go-yaml/yaml/pull/555"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/go-yaml/yaml/commit/53403b58ad1b561927d19068c655246f2db79d48"
+      },
+      {
+        "type": "WEB",
+        "url": "https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=18496"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2020-0036",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2021-0061",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2021-04-14T20:04:52Z",
+    "aliases": [
+      "CVE-2021-4235",
+      "GHSA-r88r-gmrh-7j83"
+    ],
+    "summary": "Denial of service in gopkg.in/yaml.v2",
+    "details": "Due to unbounded alias chasing, a maliciously crafted YAML file can cause the system to consume significant system resources. If parsing user input, this may be used as a denial of service vector.",
+    "affected": [
+      {
+        "package": {
+          "name": "gopkg.in/yaml.v2",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "2.2.3"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "gopkg.in/yaml.v2",
+              "symbols": [
+                "Decoder.Decode",
+                "Unmarshal",
+                "UnmarshalStrict",
+                "decoder.unmarshal"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "package": {
+          "name": "github.com/go-yaml/yaml",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "github.com/go-yaml/yaml",
+              "symbols": [
+                "Decoder.Decode",
+                "Unmarshal",
+                "UnmarshalStrict",
+                "decoder.unmarshal"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://github.com/go-yaml/yaml/pull/375"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/go-yaml/yaml/commit/bb4e33bf68bf89cad44d386192cbed201f35b241"
+      }
+    ],
+    "credits": [
+      {
+        "name": "@simonferquel"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2021-0061",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2022-0956",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2022-08-29T22:15:46Z",
+    "aliases": [
+      "CVE-2022-3064",
+      "GHSA-6q6q-88xp-6f2r"
+    ],
+    "summary": "Excessive resource consumption in gopkg.in/yaml.v2",
+    "details": "Parsing malicious or large YAML documents can consume excessive amounts of CPU or memory.",
+    "affected": [
+      {
+        "package": {
+          "name": "gopkg.in/yaml.v2",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "2.2.4"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "gopkg.in/yaml.v2",
+              "symbols": [
+                "Decoder.Decode",
+                "Unmarshal",
+                "UnmarshalStrict",
+                "decoder.unmarshal",
+                "yaml_parser_increase_flow_level",
+                "yaml_parser_roll_indent"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://github.com/go-yaml/yaml/commit/f221b8435cfb71e54062f6c6e99e9ade30b124d5"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/go-yaml/yaml/releases/tag/v2.2.4"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2022-0956",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2020-0012",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2021-04-14T20:04:52Z",
+    "aliases": [
+      "CVE-2020-9283",
+      "GHSA-ffhg-7mh4-33c4"
+    ],
+    "summary": "Panic due to improper verification of cryptographic signatures in golang.org/x/crypto/ssh",
+    "details": "An attacker can craft an ssh-ed25519 or sk-ssh-ed25519@openssh.com public key, such that the library will panic when trying to verify a signature with it. If verifying signatures using user supplied public keys, this may be used as a denial of service vector.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.0.0-20200220183623-bac4c82f6975"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/ssh",
+              "symbols": [
+                "CertChecker.Authenticate",
+                "CertChecker.CheckCert",
+                "CertChecker.CheckHostKey",
+                "Certificate.Verify",
+                "Dial",
+                "NewClientConn",
+                "NewPublicKey",
+                "NewServerConn",
+                "NewSignerFromKey",
+                "NewSignerFromSigner",
+                "ParseAuthorizedKey",
+                "ParseKnownHosts",
+                "ParsePrivateKey",
+                "ParsePrivateKeyWithPassphrase",
+                "ParsePublicKey",
+                "ParseRawPrivateKey",
+                "ParseRawPrivateKeyWithPassphrase",
+                "ed25519PublicKey.Verify",
+                "parseED25519",
+                "parseSKEd25519",
+                "skEd25519PublicKey.Verify"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/220357"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.googlesource.com/crypto/+/bac4c82f69751a6dd76e702d54b3ceb88adab236"
+      },
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/g/golang-announce/c/3L45YRc91SY"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Alex Gaynor, Fish in a Barrel"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2020-0012",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2020-0013",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2021-04-14T20:04:52Z",
+    "aliases": [
+      "CVE-2017-3204",
+      "GHSA-xhjq-w7xm-p8qj"
+    ],
+    "summary": "Man-in-the-middle attack in golang.org/x/crypto/ssh",
+    "details": "By default host key verification is disabled which allows for man-in-the-middle attacks against SSH clients if ClientConfig.HostKeyCallback is not set.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.0.0-20170330155735-e4e2799dd7aa"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/ssh",
+              "symbols": [
+                "Dial",
+                "NewClientConn"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/38701"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.googlesource.com/crypto/+/e4e2799dd7aab89f583e1d898300d96367750991"
+      },
+      {
+        "type": "REPORT",
+        "url": "https://go.dev/issue/19767"
+      },
+      {
+        "type": "WEB",
+        "url": "https://bridge.grumpy-troll.org/2017/04/golang-ssh-security/"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Phil Pennock"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2020-0013",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2021-0227",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2022-02-17T17:35:32Z",
+    "aliases": [
+      "CVE-2020-29652",
+      "GHSA-3vm4-22fp-5rfm"
+    ],
+    "summary": "Panic on crafted authentication request message in golang.org/x/crypto/ssh",
+    "details": "Clients can cause a panic in SSH servers. An attacker can craft an authentication request message for the “gssapi-with-mic” method which will cause NewServerConn to panic via a nil pointer dereference if ServerConfig.GSSAPIWithMICConfig is nil.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.0.0-20201216223049-8b5274cf687f"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/ssh",
+              "symbols": [
+                "NewServerConn",
+                "connection.serverAuthenticate"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/278852"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.googlesource.com/crypto/+/8b5274cf687fd9316b4108863654cc57385531e8"
+      },
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/g/golang-announce/c/ouZIlBimOsE?pli=1"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Joern Schneewesiz (GitLab Security Research Team)"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2021-0227",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2021-0356",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2022-04-25T20:38:40Z",
+    "aliases": [
+      "CVE-2022-27191",
+      "GHSA-8c26-wmh5-6g9v"
+    ],
+    "summary": "Denial of service via crafted Signer in golang.org/x/crypto/ssh",
+    "details": "Attackers can cause a crash in SSH servers when the server has been configured by passing a Signer to ServerConfig.AddHostKey such that\n1) the Signer passed to AddHostKey does not implement AlgorithmSigner, and\n2) the Signer passed to AddHostKey returns a key of type “ssh-rsa” from its PublicKey method.\n\nServers that only use Signer implementations provided by the ssh package are unaffected.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.0.0-20220314234659-1baeb1ce4c0b"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/ssh",
+              "symbols": [
+                "ServerConfig.AddHostKey"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/392355"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.googlesource.com/crypto/+/1baeb1ce4c0b006eff0f294c47cb7617598dfb3d"
+      },
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/g/golang-announce"
+      },
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/g/golang-announce/c/-cp44ypCT5s"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2021-0356",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2022-0209",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2022-07-01T20:15:25Z",
+    "aliases": [
+      "CVE-2019-11840",
+      "GHSA-r5c5-pr8j-pfp7"
+    ],
+    "summary": "Insufficiently random values in golang.org/x/crypto/salsa20",
+    "details": "XORKeyStream generates incorrect and insecure output for very large inputs.\n\nIf more than 256 GiB of keystream is generated, or if the counter otherwise grows greater than 32 bits, the amd64 implementation will first generate incorrect output, and then cycle back to previously generated keystream. Repeated keystream bytes can lead to loss of confidentiality in encryption applications, or to predictability in CSPRNG applications.\n\nThe issue might affect uses of golang.org/x/crypto/nacl with extremely large messages.\n\nArchitectures other than amd64 and uses that generate less than 256 GiB of keystream for a single salsa20.XORKeyStream invocation are unaffected.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.0.0-20190320223903-b7391e95e576"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/salsa20/salsa",
+              "goarch": [
+                "amd64"
+              ],
+              "symbols": [
+                "XORKeyStream"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/168406"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.googlesource.com/crypto/+/b7391e95e576cacdcdd422573063bc057239113d"
+      },
+      {
+        "type": "REPORT",
+        "url": "https://go.dev/issue/30965"
+      },
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/g/golang-announce/c/tjyNcJxb2vQ/m/n0NRBziSCAAJ"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Michael McLoughlin"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2022-0209",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2022-0229",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2022-07-06T18:23:48Z",
+    "aliases": [
+      "CVE-2020-7919",
+      "GHSA-cjjc-xp8v-855w"
+    ],
+    "summary": "Panic in certificate parsing in crypto/x509 and golang.org/x/crypto/cryptobyte",
+    "details": "On 32-bit architectures, a malformed input to crypto/x509 or the ASN.1 parsing functions of golang.org/x/crypto/cryptobyte can lead to a panic.\n\nThe malformed certificate can be delivered via a crypto/tls connection to a client, or to a server that accepts client certificates. net/http clients can be made to crash by an HTTPS server, while net/http servers that accept client certificates will recover the panic and are unaffected.",
+    "affected": [
+      {
+        "package": {
+          "name": "stdlib",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.12.16"
+              },
+              {
+                "introduced": "1.13.0-0"
+              },
+              {
+                "fixed": "1.13.7"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "crypto/x509"
+            }
+          ]
+        }
+      },
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.0.0-20200124225646-8b5121be2f68"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/cryptobyte"
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/216680"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.googlesource.com/go/+/b13ce14c4a6aa59b7b041ad2b6eed2d23e15b574"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/216677"
+      },
+      {
+        "type": "REPORT",
+        "url": "https://go.dev/issue/36837"
+      },
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/g/golang-announce/c/Hsw4mHYc470"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Project Wycheproof"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2022-0229",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2022-0968",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2022-09-13T03:32:38Z",
+    "aliases": [
+      "CVE-2021-43565",
+      "GHSA-gwc9-m7rh-j2ww"
+    ],
+    "summary": "Panic on malformed packets in golang.org/x/crypto/ssh",
+    "details": "Unauthenticated clients can cause a panic in SSH servers.\n\nWhen using AES-GCM or ChaCha20Poly1305, consuming a malformed packet which contains an empty plaintext causes a panic.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.0.0-20211202192323-5770296d904e"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/ssh",
+              "symbols": [
+                "Dial",
+                "NewClientConn",
+                "NewServerConn",
+                "chacha20Poly1305Cipher.readCipherPacket",
+                "curve25519sha256.Client",
+                "curve25519sha256.Server",
+                "dhGEXSHA.Client",
+                "dhGEXSHA.Server",
+                "dhGroup.Client",
+                "dhGroup.Server",
+                "ecdh.Client",
+                "ecdh.Server",
+                "gcmCipher.readCipherPacket"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/g/golang-announce/c/2AR1sKiM-Qs"
+      },
+      {
+        "type": "REPORT",
+        "url": "https://go.dev/issues/49932"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/368814/"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Rod Hynes (Psiphon Inc)"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2022-0968",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2023-1992",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2023-08-23T14:38:42Z",
+    "aliases": [
+      "CVE-2019-11841",
+      "GHSA-x3jr-pf6g-c48f"
+    ],
+    "summary": "Misleading message verification in golang.org/x/crypto/openpgp/clearsign",
+    "details": "The clearsign package accepts some malformed messages, making it possible for an attacker to trick a human user (but not a Go program) into thinking unverified text is part of the message.\n\nWith fix, messages with malformed headers in the SIGNED MESSAGE section are rejected.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.0.0-20190424203555-c05e17bb3b2d"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/openpgp/clearsign",
+              "symbols": [
+                "Decode"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://go-review.git.corp.google.com/c/crypto/+/173778"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.googlesource.com/crypto/+/c05e17bb3b2dca130fc919668a96b4bec9eb9442"
+      },
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/d/msg/golang-openpgp/6vdgZoTgbIY/K6bBY9z3DAAJ"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Aida Mynzhasova (SEC Consult Vulnerability Lab)"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2023-1992",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2023-2402",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2023-12-18T21:18:26Z",
+    "aliases": [
+      "CVE-2023-48795",
+      "GHSA-45x7-px36-x8w8"
+    ],
+    "summary": "Man-in-the-middle attacker can compromise integrity of secure channel in golang.org/x/crypto",
+    "details": "A protocol weakness allows a MITM attacker to compromise the integrity of the secure channel before it is established, allowing the attacker to prevent transmission of a number of messages immediately after the secure channel is established without either side being aware.\n\nThe impact of this attack is relatively limited, as it does not compromise confidentiality of the channel. Notably this attack would allow an attacker to prevent the transmission of the SSH2_MSG_EXT_INFO message, disabling a handful of newer security features.\n\nThis protocol weakness was also fixed in OpenSSH 9.6.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.17.0"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/ssh",
+              "symbols": [
+                "Client.Dial",
+                "Client.DialContext",
+                "Client.DialTCP",
+                "Client.Listen",
+                "Client.ListenTCP",
+                "Client.ListenUnix",
+                "Client.NewSession",
+                "Dial",
+                "DiscardRequests",
+                "NewClient",
+                "NewClientConn",
+                "NewServerConn",
+                "Request.Reply",
+                "Session.Close",
+                "Session.CombinedOutput",
+                "Session.Output",
+                "Session.RequestPty",
+                "Session.RequestSubsystem",
+                "Session.Run",
+                "Session.SendRequest",
+                "Session.Setenv",
+                "Session.Shell",
+                "Session.Signal",
+                "Session.Start",
+                "Session.WindowChange",
+                "channel.Accept",
+                "channel.Close",
+                "channel.CloseWrite",
+                "channel.Read",
+                "channel.ReadExtended",
+                "channel.Reject",
+                "channel.SendRequest",
+                "channel.Write",
+                "channel.WriteExtended",
+                "connectionState.readPacket",
+                "connectionState.writePacket",
+                "curve25519sha256.Client",
+                "curve25519sha256.Server",
+                "dhGEXSHA.Client",
+                "dhGEXSHA.Server",
+                "dhGroup.Client",
+                "dhGroup.Server",
+                "ecdh.Client",
+                "ecdh.Server",
+                "extChannel.Read",
+                "extChannel.Write",
+                "handshakeTransport.enterKeyExchange",
+                "handshakeTransport.readLoop",
+                "handshakeTransport.sendKexInit",
+                "mux.OpenChannel",
+                "mux.SendRequest",
+                "sessionStdin.Close",
+                "sshClientKeyboardInteractive.Challenge",
+                "tcpListener.Accept",
+                "tcpListener.Close",
+                "transport.readPacket",
+                "transport.writePacket",
+                "unixListener.Accept",
+                "unixListener.Close"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "REPORT",
+        "url": "https://go.dev/issue/64784"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/550715"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/golang/crypto/commit/9d2ee975ef9fe627bf0a6f01c1f69e8ef1d4f05d"
+      },
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/g/golang-announce/c/qA3XtxvMUyg"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.openssh.com/txt/release-9.6"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Fabian Bäumer (Ruhr University Bochum)"
+      },
+      {
+        "name": "Marcus Brinkmann (Ruhr University Bochum)"
+      },
+      {
+        "name": "Jörg Schwenk (Ruhr University Bochum)"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2023-2402",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2024-2961",
+    "modified": "2024-07-02T19:27:52Z",
+    "published": "2024-07-02T19:27:52Z",
+    "aliases": [
+      "CVE-2022-30636"
+    ],
+    "summary": "Limited directory traversal vulnerability on Windows in golang.org/x/crypto",
+    "details": "httpTokenCacheKey uses path.Base to extract the expected HTTP-01 token value to lookup in the DirCache implementation. On Windows, path.Base acts differently to filepath.Base, since Windows uses a different path separator (\\ vs. /), allowing a user to provide a relative path, i.e. .well-known/acme-challenge/..\\..\\asd becomes ..\\..\\asd. The extracted path is then suffixed with +http-01, joined with the cache directory, and opened.\n\nSince the controlled path is suffixed with +http-01 before opening, the impact of this is significantly limited, since it only allows reading arbitrary files on the system if and only if they have this suffix.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.0.0-20220525230936-793ad666bf5e"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/acme/autocert",
+              "goos": [
+                "windows"
+              ],
+              "symbols": [
+                "DirCache.Delete",
+                "DirCache.Get",
+                "DirCache.Put",
+                "HostWhitelist",
+                "Manager.GetCertificate",
+                "Manager.Listener",
+                "NewListener",
+                "listener.Accept",
+                "listener.Close"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/408694"
+      },
+      {
+        "type": "REPORT",
+        "url": "https://go.dev/issue/53082"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Juho Nurminen of Mattermost"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2024-2961",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2024-3321",
+    "modified": "2025-02-18T20:32:01Z",
+    "published": "2024-12-11T18:40:19Z",
+    "aliases": [
+      "CVE-2024-45337",
+      "GHSA-v778-237x-gjrc"
+    ],
+    "summary": "Misuse of connection.serverAuthenticate may cause authorization bypass in golang.org/x/crypto",
+    "details": "Applications and libraries which misuse connection.serverAuthenticate (via callback field ServerConfig.PublicKeyCallback) may be susceptible to an authorization bypass.\n\nThe documentation for ServerConfig.PublicKeyCallback says that \"A call to this function does not guarantee that the key offered is in fact used to authenticate.\" Specifically, the SSH protocol allows clients to inquire about whether a public key is acceptable before proving control of the corresponding private key. PublicKeyCallback may be called with multiple keys, and the order in which the keys were provided cannot be used to infer which key the client successfully authenticated with, if any. Some applications, which store the key(s) passed to PublicKeyCallback (or derived information) and make security relevant determinations based on it once the connection is established, may make incorrect assumptions.\n\nFor example, an attacker may send public keys A and B, and then authenticate with A. PublicKeyCallback would be called only twice, first with A and then with B. A vulnerable application may then make authorization decisions based on key B for which the attacker does not actually control the private key.\n\nSince this API is widely misused, as a partial mitigation golang.org/x/cry...@v0.31.0 enforces the property that, when successfully authenticating via public key, the last key passed to ServerConfig.PublicKeyCallback will be the key used to authenticate the connection. PublicKeyCallback will now be called multiple times with the same key, if necessary. Note that the client may still not control the last key passed to PublicKeyCallback if the connection is then authenticated with a different method, such as PasswordCallback, KeyboardInteractiveCallback, or NoClientAuth.\n\nUsers should be using the Extensions field of the Permissions return value from the various authentication callbacks to record data associated with the authentication attempt instead of referencing external state. Once the connection is established the state corresponding to the successful authentication attempt can be retrieved via the ServerConn.Permissions field. Note that some third-party libraries misuse the Permissions type by sharing it across authentication attempts; users of third-party libraries should refer to the relevant projects for guidance.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.31.0"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/ssh",
+              "symbols": [
+                "NewServerConn",
+                "ServerConfig.PublicKeyCallback",
+                "connection.serverAuthenticate"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://github.com/golang/crypto/commit/b4f1988a35dee11ec3e05d6bf3e90b695fbd8909"
+      },
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/635315"
+      },
+      {
+        "type": "REPORT",
+        "url": "https://go.dev/issue/70779"
+      },
+      {
+        "type": "WEB",
+        "url": "https://groups.google.com/g/golang-announce/c/-nPEi39gI4Q/m/cGVPJCqdAQAJ"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Damien Tournoud (Platform.sh / Upsun)"
+      },
+      {
+        "name": "Patrick Dawkins (Platform.sh / Upsun)"
+      },
+      {
+        "name": "Vince Parker (Platform.sh / Upsun)"
+      },
+      {
+        "name": "Jules Duvivier (Platform.sh / Upsun)"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2024-3321",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2025-3487",
+    "modified": "2025-02-26T02:51:51Z",
+    "published": "2025-02-26T02:51:51Z",
+    "aliases": [
+      "CVE-2025-22869"
+    ],
+    "summary": "Potential denial of service in golang.org/x/crypto",
+    "details": "SSH servers which implement file transfer protocols are vulnerable to a denial of service attack from clients which complete the key exchange slowly, or not at all, causing pending content to be read into memory, but never transmitted.",
+    "affected": [
+      {
+        "package": {
+          "name": "golang.org/x/crypto",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "0.35.0"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "golang.org/x/crypto/ssh",
+              "symbols": [
+                "Client.Dial",
+                "Client.DialContext",
+                "Client.DialTCP",
+                "Client.Listen",
+                "Client.ListenTCP",
+                "Client.ListenUnix",
+                "Client.NewSession",
+                "Dial",
+                "DiscardRequests",
+                "NewClient",
+                "NewClientConn",
+                "NewServerConn",
+                "Request.Reply",
+                "Session.Close",
+                "Session.CombinedOutput",
+                "Session.Output",
+                "Session.RequestPty",
+                "Session.RequestSubsystem",
+                "Session.Run",
+                "Session.SendRequest",
+                "Session.Setenv",
+                "Session.Shell",
+                "Session.Signal",
+                "Session.Start",
+                "Session.WindowChange",
+                "channel.Accept",
+                "channel.Close",
+                "channel.CloseWrite",
+                "channel.Read",
+                "channel.ReadExtended",
+                "channel.Reject",
+                "channel.SendRequest",
+                "channel.Write",
+                "channel.WriteExtended",
+                "connection.SendAuthBanner",
+                "curve25519sha256.Client",
+                "curve25519sha256.Server",
+                "dhGEXSHA.Client",
+                "dhGEXSHA.Server",
+                "dhGroup.Client",
+                "dhGroup.Server",
+                "ecdh.Client",
+                "ecdh.Server",
+                "extChannel.Read",
+                "extChannel.Write",
+                "handshakeTransport.kexLoop",
+                "handshakeTransport.recordWriteError",
+                "handshakeTransport.writePacket",
+                "mux.OpenChannel",
+                "mux.SendRequest",
+                "newHandshakeTransport",
+                "sessionStdin.Close",
+                "sshClientKeyboardInteractive.Challenge",
+                "tcpListener.Accept",
+                "tcpListener.Close",
+                "unixListener.Accept",
+                "unixListener.Close"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://go.dev/cl/652135"
+      },
+      {
+        "type": "REPORT",
+        "url": "https://go.dev/issue/71931"
+      }
+    ],
+    "credits": [
+      {
+        "name": "Yuichi Watanabe"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2025-3487",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
     "id": "GO-2021-0067",
     "modified": "2024-05-20T16:03:47Z",
     "published": "2021-04-14T20:04:52Z",
@@ -10082,1312 +11495,6 @@
 {
   "osv": {
     "schema_version": "1.3.1",
-    "id": "GO-2020-0012",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2021-04-14T20:04:52Z",
-    "aliases": [
-      "CVE-2020-9283",
-      "GHSA-ffhg-7mh4-33c4"
-    ],
-    "summary": "Panic due to improper verification of cryptographic signatures in golang.org/x/crypto/ssh",
-    "details": "An attacker can craft an ssh-ed25519 or sk-ssh-ed25519@openssh.com public key, such that the library will panic when trying to verify a signature with it. If verifying signatures using user supplied public keys, this may be used as a denial of service vector.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.0.0-20200220183623-bac4c82f6975"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/ssh",
-              "symbols": [
-                "CertChecker.Authenticate",
-                "CertChecker.CheckCert",
-                "CertChecker.CheckHostKey",
-                "Certificate.Verify",
-                "Dial",
-                "NewClientConn",
-                "NewPublicKey",
-                "NewServerConn",
-                "NewSignerFromKey",
-                "NewSignerFromSigner",
-                "ParseAuthorizedKey",
-                "ParseKnownHosts",
-                "ParsePrivateKey",
-                "ParsePrivateKeyWithPassphrase",
-                "ParsePublicKey",
-                "ParseRawPrivateKey",
-                "ParseRawPrivateKeyWithPassphrase",
-                "ed25519PublicKey.Verify",
-                "parseED25519",
-                "parseSKEd25519",
-                "skEd25519PublicKey.Verify"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/220357"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.googlesource.com/crypto/+/bac4c82f69751a6dd76e702d54b3ceb88adab236"
-      },
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/g/golang-announce/c/3L45YRc91SY"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Alex Gaynor, Fish in a Barrel"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2020-0012",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2020-0013",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2021-04-14T20:04:52Z",
-    "aliases": [
-      "CVE-2017-3204",
-      "GHSA-xhjq-w7xm-p8qj"
-    ],
-    "summary": "Man-in-the-middle attack in golang.org/x/crypto/ssh",
-    "details": "By default host key verification is disabled which allows for man-in-the-middle attacks against SSH clients if ClientConfig.HostKeyCallback is not set.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.0.0-20170330155735-e4e2799dd7aa"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/ssh",
-              "symbols": [
-                "Dial",
-                "NewClientConn"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/38701"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.googlesource.com/crypto/+/e4e2799dd7aab89f583e1d898300d96367750991"
-      },
-      {
-        "type": "REPORT",
-        "url": "https://go.dev/issue/19767"
-      },
-      {
-        "type": "WEB",
-        "url": "https://bridge.grumpy-troll.org/2017/04/golang-ssh-security/"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Phil Pennock"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2020-0013",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2021-0227",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2022-02-17T17:35:32Z",
-    "aliases": [
-      "CVE-2020-29652",
-      "GHSA-3vm4-22fp-5rfm"
-    ],
-    "summary": "Panic on crafted authentication request message in golang.org/x/crypto/ssh",
-    "details": "Clients can cause a panic in SSH servers. An attacker can craft an authentication request message for the “gssapi-with-mic” method which will cause NewServerConn to panic via a nil pointer dereference if ServerConfig.GSSAPIWithMICConfig is nil.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.0.0-20201216223049-8b5274cf687f"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/ssh",
-              "symbols": [
-                "NewServerConn",
-                "connection.serverAuthenticate"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/278852"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.googlesource.com/crypto/+/8b5274cf687fd9316b4108863654cc57385531e8"
-      },
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/g/golang-announce/c/ouZIlBimOsE?pli=1"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Joern Schneewesiz (GitLab Security Research Team)"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2021-0227",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2021-0356",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2022-04-25T20:38:40Z",
-    "aliases": [
-      "CVE-2022-27191",
-      "GHSA-8c26-wmh5-6g9v"
-    ],
-    "summary": "Denial of service via crafted Signer in golang.org/x/crypto/ssh",
-    "details": "Attackers can cause a crash in SSH servers when the server has been configured by passing a Signer to ServerConfig.AddHostKey such that\n1) the Signer passed to AddHostKey does not implement AlgorithmSigner, and\n2) the Signer passed to AddHostKey returns a key of type “ssh-rsa” from its PublicKey method.\n\nServers that only use Signer implementations provided by the ssh package are unaffected.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.0.0-20220314234659-1baeb1ce4c0b"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/ssh",
-              "symbols": [
-                "ServerConfig.AddHostKey"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/392355"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.googlesource.com/crypto/+/1baeb1ce4c0b006eff0f294c47cb7617598dfb3d"
-      },
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/g/golang-announce"
-      },
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/g/golang-announce/c/-cp44ypCT5s"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2021-0356",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2022-0209",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2022-07-01T20:15:25Z",
-    "aliases": [
-      "CVE-2019-11840",
-      "GHSA-r5c5-pr8j-pfp7"
-    ],
-    "summary": "Insufficiently random values in golang.org/x/crypto/salsa20",
-    "details": "XORKeyStream generates incorrect and insecure output for very large inputs.\n\nIf more than 256 GiB of keystream is generated, or if the counter otherwise grows greater than 32 bits, the amd64 implementation will first generate incorrect output, and then cycle back to previously generated keystream. Repeated keystream bytes can lead to loss of confidentiality in encryption applications, or to predictability in CSPRNG applications.\n\nThe issue might affect uses of golang.org/x/crypto/nacl with extremely large messages.\n\nArchitectures other than amd64 and uses that generate less than 256 GiB of keystream for a single salsa20.XORKeyStream invocation are unaffected.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.0.0-20190320223903-b7391e95e576"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/salsa20/salsa",
-              "goarch": [
-                "amd64"
-              ],
-              "symbols": [
-                "XORKeyStream"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/168406"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.googlesource.com/crypto/+/b7391e95e576cacdcdd422573063bc057239113d"
-      },
-      {
-        "type": "REPORT",
-        "url": "https://go.dev/issue/30965"
-      },
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/g/golang-announce/c/tjyNcJxb2vQ/m/n0NRBziSCAAJ"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Michael McLoughlin"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2022-0209",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2022-0229",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2022-07-06T18:23:48Z",
-    "aliases": [
-      "CVE-2020-7919",
-      "GHSA-cjjc-xp8v-855w"
-    ],
-    "summary": "Panic in certificate parsing in crypto/x509 and golang.org/x/crypto/cryptobyte",
-    "details": "On 32-bit architectures, a malformed input to crypto/x509 or the ASN.1 parsing functions of golang.org/x/crypto/cryptobyte can lead to a panic.\n\nThe malformed certificate can be delivered via a crypto/tls connection to a client, or to a server that accepts client certificates. net/http clients can be made to crash by an HTTPS server, while net/http servers that accept client certificates will recover the panic and are unaffected.",
-    "affected": [
-      {
-        "package": {
-          "name": "stdlib",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "1.12.16"
-              },
-              {
-                "introduced": "1.13.0-0"
-              },
-              {
-                "fixed": "1.13.7"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "crypto/x509"
-            }
-          ]
-        }
-      },
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.0.0-20200124225646-8b5121be2f68"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/cryptobyte"
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/216680"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.googlesource.com/go/+/b13ce14c4a6aa59b7b041ad2b6eed2d23e15b574"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/216677"
-      },
-      {
-        "type": "REPORT",
-        "url": "https://go.dev/issue/36837"
-      },
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/g/golang-announce/c/Hsw4mHYc470"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Project Wycheproof"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2022-0229",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2022-0968",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2022-09-13T03:32:38Z",
-    "aliases": [
-      "CVE-2021-43565",
-      "GHSA-gwc9-m7rh-j2ww"
-    ],
-    "summary": "Panic on malformed packets in golang.org/x/crypto/ssh",
-    "details": "Unauthenticated clients can cause a panic in SSH servers.\n\nWhen using AES-GCM or ChaCha20Poly1305, consuming a malformed packet which contains an empty plaintext causes a panic.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.0.0-20211202192323-5770296d904e"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/ssh",
-              "symbols": [
-                "Dial",
-                "NewClientConn",
-                "NewServerConn",
-                "chacha20Poly1305Cipher.readCipherPacket",
-                "curve25519sha256.Client",
-                "curve25519sha256.Server",
-                "dhGEXSHA.Client",
-                "dhGEXSHA.Server",
-                "dhGroup.Client",
-                "dhGroup.Server",
-                "ecdh.Client",
-                "ecdh.Server",
-                "gcmCipher.readCipherPacket"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/g/golang-announce/c/2AR1sKiM-Qs"
-      },
-      {
-        "type": "REPORT",
-        "url": "https://go.dev/issues/49932"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/368814/"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Rod Hynes (Psiphon Inc)"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2022-0968",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2023-1992",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2023-08-23T14:38:42Z",
-    "aliases": [
-      "CVE-2019-11841",
-      "GHSA-x3jr-pf6g-c48f"
-    ],
-    "summary": "Misleading message verification in golang.org/x/crypto/openpgp/clearsign",
-    "details": "The clearsign package accepts some malformed messages, making it possible for an attacker to trick a human user (but not a Go program) into thinking unverified text is part of the message.\n\nWith fix, messages with malformed headers in the SIGNED MESSAGE section are rejected.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.0.0-20190424203555-c05e17bb3b2d"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/openpgp/clearsign",
-              "symbols": [
-                "Decode"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://go-review.git.corp.google.com/c/crypto/+/173778"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.googlesource.com/crypto/+/c05e17bb3b2dca130fc919668a96b4bec9eb9442"
-      },
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/d/msg/golang-openpgp/6vdgZoTgbIY/K6bBY9z3DAAJ"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Aida Mynzhasova (SEC Consult Vulnerability Lab)"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2023-1992",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2023-2402",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2023-12-18T21:18:26Z",
-    "aliases": [
-      "CVE-2023-48795",
-      "GHSA-45x7-px36-x8w8"
-    ],
-    "summary": "Man-in-the-middle attacker can compromise integrity of secure channel in golang.org/x/crypto",
-    "details": "A protocol weakness allows a MITM attacker to compromise the integrity of the secure channel before it is established, allowing the attacker to prevent transmission of a number of messages immediately after the secure channel is established without either side being aware.\n\nThe impact of this attack is relatively limited, as it does not compromise confidentiality of the channel. Notably this attack would allow an attacker to prevent the transmission of the SSH2_MSG_EXT_INFO message, disabling a handful of newer security features.\n\nThis protocol weakness was also fixed in OpenSSH 9.6.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.17.0"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/ssh",
-              "symbols": [
-                "Client.Dial",
-                "Client.DialContext",
-                "Client.DialTCP",
-                "Client.Listen",
-                "Client.ListenTCP",
-                "Client.ListenUnix",
-                "Client.NewSession",
-                "Dial",
-                "DiscardRequests",
-                "NewClient",
-                "NewClientConn",
-                "NewServerConn",
-                "Request.Reply",
-                "Session.Close",
-                "Session.CombinedOutput",
-                "Session.Output",
-                "Session.RequestPty",
-                "Session.RequestSubsystem",
-                "Session.Run",
-                "Session.SendRequest",
-                "Session.Setenv",
-                "Session.Shell",
-                "Session.Signal",
-                "Session.Start",
-                "Session.WindowChange",
-                "channel.Accept",
-                "channel.Close",
-                "channel.CloseWrite",
-                "channel.Read",
-                "channel.ReadExtended",
-                "channel.Reject",
-                "channel.SendRequest",
-                "channel.Write",
-                "channel.WriteExtended",
-                "connectionState.readPacket",
-                "connectionState.writePacket",
-                "curve25519sha256.Client",
-                "curve25519sha256.Server",
-                "dhGEXSHA.Client",
-                "dhGEXSHA.Server",
-                "dhGroup.Client",
-                "dhGroup.Server",
-                "ecdh.Client",
-                "ecdh.Server",
-                "extChannel.Read",
-                "extChannel.Write",
-                "handshakeTransport.enterKeyExchange",
-                "handshakeTransport.readLoop",
-                "handshakeTransport.sendKexInit",
-                "mux.OpenChannel",
-                "mux.SendRequest",
-                "sessionStdin.Close",
-                "sshClientKeyboardInteractive.Challenge",
-                "tcpListener.Accept",
-                "tcpListener.Close",
-                "transport.readPacket",
-                "transport.writePacket",
-                "unixListener.Accept",
-                "unixListener.Close"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "REPORT",
-        "url": "https://go.dev/issue/64784"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/550715"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/golang/crypto/commit/9d2ee975ef9fe627bf0a6f01c1f69e8ef1d4f05d"
-      },
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/g/golang-announce/c/qA3XtxvMUyg"
-      },
-      {
-        "type": "WEB",
-        "url": "https://www.openssh.com/txt/release-9.6"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Fabian Bäumer (Ruhr University Bochum)"
-      },
-      {
-        "name": "Marcus Brinkmann (Ruhr University Bochum)"
-      },
-      {
-        "name": "Jörg Schwenk (Ruhr University Bochum)"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2023-2402",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2024-2961",
-    "modified": "2024-07-02T19:27:52Z",
-    "published": "2024-07-02T19:27:52Z",
-    "aliases": [
-      "CVE-2022-30636"
-    ],
-    "summary": "Limited directory traversal vulnerability on Windows in golang.org/x/crypto",
-    "details": "httpTokenCacheKey uses path.Base to extract the expected HTTP-01 token value to lookup in the DirCache implementation. On Windows, path.Base acts differently to filepath.Base, since Windows uses a different path separator (\\ vs. /), allowing a user to provide a relative path, i.e. .well-known/acme-challenge/..\\..\\asd becomes ..\\..\\asd. The extracted path is then suffixed with +http-01, joined with the cache directory, and opened.\n\nSince the controlled path is suffixed with +http-01 before opening, the impact of this is significantly limited, since it only allows reading arbitrary files on the system if and only if they have this suffix.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.0.0-20220525230936-793ad666bf5e"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/acme/autocert",
-              "goos": [
-                "windows"
-              ],
-              "symbols": [
-                "DirCache.Delete",
-                "DirCache.Get",
-                "DirCache.Put",
-                "HostWhitelist",
-                "Manager.GetCertificate",
-                "Manager.Listener",
-                "NewListener",
-                "listener.Accept",
-                "listener.Close"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/408694"
-      },
-      {
-        "type": "REPORT",
-        "url": "https://go.dev/issue/53082"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Juho Nurminen of Mattermost"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2024-2961",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2024-3321",
-    "modified": "2025-02-18T20:32:01Z",
-    "published": "2024-12-11T18:40:19Z",
-    "aliases": [
-      "CVE-2024-45337",
-      "GHSA-v778-237x-gjrc"
-    ],
-    "summary": "Misuse of connection.serverAuthenticate may cause authorization bypass in golang.org/x/crypto",
-    "details": "Applications and libraries which misuse connection.serverAuthenticate (via callback field ServerConfig.PublicKeyCallback) may be susceptible to an authorization bypass.\n\nThe documentation for ServerConfig.PublicKeyCallback says that \"A call to this function does not guarantee that the key offered is in fact used to authenticate.\" Specifically, the SSH protocol allows clients to inquire about whether a public key is acceptable before proving control of the corresponding private key. PublicKeyCallback may be called with multiple keys, and the order in which the keys were provided cannot be used to infer which key the client successfully authenticated with, if any. Some applications, which store the key(s) passed to PublicKeyCallback (or derived information) and make security relevant determinations based on it once the connection is established, may make incorrect assumptions.\n\nFor example, an attacker may send public keys A and B, and then authenticate with A. PublicKeyCallback would be called only twice, first with A and then with B. A vulnerable application may then make authorization decisions based on key B for which the attacker does not actually control the private key.\n\nSince this API is widely misused, as a partial mitigation golang.org/x/cry...@v0.31.0 enforces the property that, when successfully authenticating via public key, the last key passed to ServerConfig.PublicKeyCallback will be the key used to authenticate the connection. PublicKeyCallback will now be called multiple times with the same key, if necessary. Note that the client may still not control the last key passed to PublicKeyCallback if the connection is then authenticated with a different method, such as PasswordCallback, KeyboardInteractiveCallback, or NoClientAuth.\n\nUsers should be using the Extensions field of the Permissions return value from the various authentication callbacks to record data associated with the authentication attempt instead of referencing external state. Once the connection is established the state corresponding to the successful authentication attempt can be retrieved via the ServerConn.Permissions field. Note that some third-party libraries misuse the Permissions type by sharing it across authentication attempts; users of third-party libraries should refer to the relevant projects for guidance.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.31.0"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/ssh",
-              "symbols": [
-                "NewServerConn",
-                "ServerConfig.PublicKeyCallback",
-                "connection.serverAuthenticate"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://github.com/golang/crypto/commit/b4f1988a35dee11ec3e05d6bf3e90b695fbd8909"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/635315"
-      },
-      {
-        "type": "REPORT",
-        "url": "https://go.dev/issue/70779"
-      },
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/g/golang-announce/c/-nPEi39gI4Q/m/cGVPJCqdAQAJ"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Damien Tournoud (Platform.sh / Upsun)"
-      },
-      {
-        "name": "Patrick Dawkins (Platform.sh / Upsun)"
-      },
-      {
-        "name": "Vince Parker (Platform.sh / Upsun)"
-      },
-      {
-        "name": "Jules Duvivier (Platform.sh / Upsun)"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2024-3321",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2025-3487",
-    "modified": "2025-02-26T02:51:51Z",
-    "published": "2025-02-26T02:51:51Z",
-    "aliases": [
-      "CVE-2025-22869"
-    ],
-    "summary": "Potential denial of service in golang.org/x/crypto",
-    "details": "SSH servers which implement file transfer protocols are vulnerable to a denial of service attack from clients which complete the key exchange slowly, or not at all, causing pending content to be read into memory, but never transmitted.",
-    "affected": [
-      {
-        "package": {
-          "name": "golang.org/x/crypto",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.35.0"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/crypto/ssh",
-              "symbols": [
-                "Client.Dial",
-                "Client.DialContext",
-                "Client.DialTCP",
-                "Client.Listen",
-                "Client.ListenTCP",
-                "Client.ListenUnix",
-                "Client.NewSession",
-                "Dial",
-                "DiscardRequests",
-                "NewClient",
-                "NewClientConn",
-                "NewServerConn",
-                "Request.Reply",
-                "Session.Close",
-                "Session.CombinedOutput",
-                "Session.Output",
-                "Session.RequestPty",
-                "Session.RequestSubsystem",
-                "Session.Run",
-                "Session.SendRequest",
-                "Session.Setenv",
-                "Session.Shell",
-                "Session.Signal",
-                "Session.Start",
-                "Session.WindowChange",
-                "channel.Accept",
-                "channel.Close",
-                "channel.CloseWrite",
-                "channel.Read",
-                "channel.ReadExtended",
-                "channel.Reject",
-                "channel.SendRequest",
-                "channel.Write",
-                "channel.WriteExtended",
-                "connection.SendAuthBanner",
-                "curve25519sha256.Client",
-                "curve25519sha256.Server",
-                "dhGEXSHA.Client",
-                "dhGEXSHA.Server",
-                "dhGroup.Client",
-                "dhGroup.Server",
-                "ecdh.Client",
-                "ecdh.Server",
-                "extChannel.Read",
-                "extChannel.Write",
-                "handshakeTransport.kexLoop",
-                "handshakeTransport.recordWriteError",
-                "handshakeTransport.writePacket",
-                "mux.OpenChannel",
-                "mux.SendRequest",
-                "newHandshakeTransport",
-                "sessionStdin.Close",
-                "sshClientKeyboardInteractive.Challenge",
-                "tcpListener.Accept",
-                "tcpListener.Close",
-                "unixListener.Accept",
-                "unixListener.Close"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/652135"
-      },
-      {
-        "type": "REPORT",
-        "url": "https://go.dev/issue/71931"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Yuichi Watanabe"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2025-3487",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2020-0036",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2021-04-14T20:04:52Z",
-    "aliases": [
-      "CVE-2019-11254",
-      "GHSA-wxc4-f4m6-wwqv"
-    ],
-    "summary": "Excessive resource consumption in YAML parsing in gopkg.in/yaml.v2",
-    "details": "Due to unbounded aliasing, a crafted YAML file can cause consumption of significant system resources. If parsing user supplied input, this may be used as a denial of service vector.",
-    "affected": [
-      {
-        "package": {
-          "name": "gopkg.in/yaml.v2",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "2.2.8"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "gopkg.in/yaml.v2",
-              "symbols": [
-                "Decoder.Decode",
-                "Unmarshal",
-                "UnmarshalStrict",
-                "yaml_parser_decrease_flow_level",
-                "yaml_parser_fetch_more_tokens",
-                "yaml_parser_fetch_stream_start",
-                "yaml_parser_fetch_value",
-                "yaml_parser_remove_simple_key",
-                "yaml_parser_save_simple_key"
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "package": {
-          "name": "github.com/go-yaml/yaml",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "github.com/go-yaml/yaml",
-              "symbols": [
-                "Decoder.Decode",
-                "Unmarshal",
-                "UnmarshalStrict",
-                "yaml_parser_decrease_flow_level",
-                "yaml_parser_fetch_more_tokens",
-                "yaml_parser_fetch_stream_start",
-                "yaml_parser_fetch_value",
-                "yaml_parser_remove_simple_key",
-                "yaml_parser_save_simple_key"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://github.com/go-yaml/yaml/pull/555"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/go-yaml/yaml/commit/53403b58ad1b561927d19068c655246f2db79d48"
-      },
-      {
-        "type": "WEB",
-        "url": "https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=18496"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2020-0036",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2021-0061",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2021-04-14T20:04:52Z",
-    "aliases": [
-      "CVE-2021-4235",
-      "GHSA-r88r-gmrh-7j83"
-    ],
-    "summary": "Denial of service in gopkg.in/yaml.v2",
-    "details": "Due to unbounded alias chasing, a maliciously crafted YAML file can cause the system to consume significant system resources. If parsing user input, this may be used as a denial of service vector.",
-    "affected": [
-      {
-        "package": {
-          "name": "gopkg.in/yaml.v2",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "2.2.3"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "gopkg.in/yaml.v2",
-              "symbols": [
-                "Decoder.Decode",
-                "Unmarshal",
-                "UnmarshalStrict",
-                "decoder.unmarshal"
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "package": {
-          "name": "github.com/go-yaml/yaml",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "github.com/go-yaml/yaml",
-              "symbols": [
-                "Decoder.Decode",
-                "Unmarshal",
-                "UnmarshalStrict",
-                "decoder.unmarshal"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://github.com/go-yaml/yaml/pull/375"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/go-yaml/yaml/commit/bb4e33bf68bf89cad44d386192cbed201f35b241"
-      }
-    ],
-    "credits": [
-      {
-        "name": "@simonferquel"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2021-0061",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2022-0956",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2022-08-29T22:15:46Z",
-    "aliases": [
-      "CVE-2022-3064",
-      "GHSA-6q6q-88xp-6f2r"
-    ],
-    "summary": "Excessive resource consumption in gopkg.in/yaml.v2",
-    "details": "Parsing malicious or large YAML documents can consume excessive amounts of CPU or memory.",
-    "affected": [
-      {
-        "package": {
-          "name": "gopkg.in/yaml.v2",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "2.2.4"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "gopkg.in/yaml.v2",
-              "symbols": [
-                "Decoder.Decode",
-                "Unmarshal",
-                "UnmarshalStrict",
-                "decoder.unmarshal",
-                "yaml_parser_increase_flow_level",
-                "yaml_parser_roll_indent"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://github.com/go-yaml/yaml/commit/f221b8435cfb71e54062f6c6e99e9ade30b124d5"
-      },
-      {
-        "type": "WEB",
-        "url": "https://github.com/go-yaml/yaml/releases/tag/v2.2.4"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2022-0956",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
     "id": "GO-2020-0001",
     "modified": "2024-05-20T16:03:47Z",
     "published": "2021-04-14T20:04:52Z",
@@ -11627,115 +11734,104 @@
   }
 }
 {
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2022-0493",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2022-07-15T23:30:12Z",
-    "aliases": [
-      "CVE-2022-29526",
-      "GHSA-p782-xgp4-8hr8"
-    ],
-    "summary": "Incorrect privilege reporting in syscall and golang.org/x/sys/unix",
-    "details": "When called with a non-zero flags parameter, the Faccessat function can incorrectly report that a file is accessible.",
-    "affected": [
-      {
-        "package": {
-          "name": "stdlib",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "1.17.10"
-              },
-              {
-                "introduced": "1.18.0-0"
-              },
-              {
-                "fixed": "1.18.2"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "syscall",
-              "symbols": [
-                "Faccessat"
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "package": {
-          "name": "golang.org/x/sys",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "0.0.0-20220412211240-33da011f77ad"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "golang.org/x/sys/unix",
-              "symbols": [
-                "Faccessat"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/399539"
-      },
-      {
-        "type": "REPORT",
-        "url": "https://go.dev/issue/52313"
-      },
-      {
-        "type": "FIX",
-        "url": "https://go.dev/cl/400074"
-      },
-      {
-        "type": "WEB",
-        "url": "https://groups.google.com/g/golang-announce/c/Y5qrqw_lWdU"
-      }
-    ],
-    "credits": [
-      {
-        "name": "Joël Gähwiler (@256dpi)"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2022-0493",
-      "review_status": "REVIEWED"
-    }
+  "progress": {
+    "message": "Checking the code against the vulnerabilities..."
   }
 }
 {
-  "progress": {
-    "message": "Checking the code against the vulnerabilities..."
+  "finding": {
+    "osv": "GO-2022-0493",
+    "fixed_version": "v0.0.0-20220412211240-33da011f77ad",
+    "trace": [
+      {
+        "module": "golang.org/x/sys",
+        "version": "v0.0.0-20200116001909-b77594299b42"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2021-0227",
+    "fixed_version": "v0.0.0-20201216223049-8b5274cf687f",
+    "trace": [
+      {
+        "module": "golang.org/x/crypto",
+        "version": "v0.0.0-20200622213623-75b288015ac9"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2021-0356",
+    "fixed_version": "v0.0.0-20220314234659-1baeb1ce4c0b",
+    "trace": [
+      {
+        "module": "golang.org/x/crypto",
+        "version": "v0.0.0-20200622213623-75b288015ac9"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2022-0968",
+    "fixed_version": "v0.0.0-20211202192323-5770296d904e",
+    "trace": [
+      {
+        "module": "golang.org/x/crypto",
+        "version": "v0.0.0-20200622213623-75b288015ac9"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2023-2402",
+    "fixed_version": "v0.17.0",
+    "trace": [
+      {
+        "module": "golang.org/x/crypto",
+        "version": "v0.0.0-20200622213623-75b288015ac9"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2024-2961",
+    "fixed_version": "v0.0.0-20220525230936-793ad666bf5e",
+    "trace": [
+      {
+        "module": "golang.org/x/crypto",
+        "version": "v0.0.0-20200622213623-75b288015ac9"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2024-3321",
+    "fixed_version": "v0.31.0",
+    "trace": [
+      {
+        "module": "golang.org/x/crypto",
+        "version": "v0.0.0-20200622213623-75b288015ac9"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3487",
+    "fixed_version": "v0.35.0",
+    "trace": [
+      {
+        "module": "golang.org/x/crypto",
+        "version": "v0.0.0-20200622213623-75b288015ac9"
+      }
+    ]
   }
 }
 {
@@ -11848,90 +11944,6 @@
 }
 {
   "finding": {
-    "osv": "GO-2021-0227",
-    "fixed_version": "v0.0.0-20201216223049-8b5274cf687f",
-    "trace": [
-      {
-        "module": "golang.org/x/crypto",
-        "version": "v0.0.0-20200622213623-75b288015ac9"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2021-0356",
-    "fixed_version": "v0.0.0-20220314234659-1baeb1ce4c0b",
-    "trace": [
-      {
-        "module": "golang.org/x/crypto",
-        "version": "v0.0.0-20200622213623-75b288015ac9"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2022-0968",
-    "fixed_version": "v0.0.0-20211202192323-5770296d904e",
-    "trace": [
-      {
-        "module": "golang.org/x/crypto",
-        "version": "v0.0.0-20200622213623-75b288015ac9"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2023-2402",
-    "fixed_version": "v0.17.0",
-    "trace": [
-      {
-        "module": "golang.org/x/crypto",
-        "version": "v0.0.0-20200622213623-75b288015ac9"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2024-2961",
-    "fixed_version": "v0.0.0-20220525230936-793ad666bf5e",
-    "trace": [
-      {
-        "module": "golang.org/x/crypto",
-        "version": "v0.0.0-20200622213623-75b288015ac9"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2024-3321",
-    "fixed_version": "v0.31.0",
-    "trace": [
-      {
-        "module": "golang.org/x/crypto",
-        "version": "v0.0.0-20200622213623-75b288015ac9"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3487",
-    "fixed_version": "v0.35.0",
-    "trace": [
-      {
-        "module": "golang.org/x/crypto",
-        "version": "v0.0.0-20200622213623-75b288015ac9"
-      }
-    ]
-  }
-}
-{
-  "finding": {
     "osv": "GO-2021-0052",
     "fixed_version": "v1.7.7",
     "trace": [
@@ -11950,18 +11962,6 @@
       {
         "module": "github.com/gin-gonic/gin",
         "version": "v1.7.0"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2022-0493",
-    "fixed_version": "v0.0.0-20220412211240-33da011f77ad",
-    "trace": [
-      {
-        "module": "golang.org/x/sys",
-        "version": "v0.0.0-20200116001909-b77594299b42"
       }
     ]
   }
@@ -11994,45 +11994,6 @@
 }
 {
   "finding": {
-    "osv": "GO-2021-0052",
-    "fixed_version": "v1.7.7",
-    "trace": [
-      {
-        "module": "github.com/gin-gonic/gin",
-        "version": "v1.7.0",
-        "package": "github.com/gin-gonic/gin"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2023-1737",
-    "fixed_version": "v1.9.1",
-    "trace": [
-      {
-        "module": "github.com/gin-gonic/gin",
-        "version": "v1.7.0",
-        "package": "github.com/gin-gonic/gin"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3563",
-    "fixed_version": "v1.23.8",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http/internal"
-      }
-    ]
-  }
-}
-{
-  "finding": {
     "osv": "GO-2025-3420",
     "fixed_version": "v1.22.11",
     "trace": [
@@ -12053,6 +12014,19 @@
         "module": "stdlib",
         "version": "v1.21.13",
         "package": "net/http"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3563",
+    "fixed_version": "v1.23.8",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http/internal"
       }
     ]
   }
@@ -12085,13 +12059,26 @@
 }
 {
   "finding": {
-    "osv": "GO-2022-0493",
-    "fixed_version": "v0.0.0-20220412211240-33da011f77ad",
+    "osv": "GO-2021-0052",
+    "fixed_version": "v1.7.7",
     "trace": [
       {
-        "module": "golang.org/x/sys",
-        "version": "v0.0.0-20200116001909-b77594299b42",
-        "package": "golang.org/x/sys/unix"
+        "module": "github.com/gin-gonic/gin",
+        "version": "v1.7.0",
+        "package": "github.com/gin-gonic/gin"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2023-1737",
+    "fixed_version": "v1.9.1",
+    "trace": [
+      {
+        "module": "github.com/gin-gonic/gin",
+        "version": "v1.7.0",
+        "package": "github.com/gin-gonic/gin"
       }
     ]
   }
@@ -12105,6 +12092,254 @@
         "module": "stdlib",
         "version": "v1.21.13",
         "package": "encoding/gob"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2022-0493",
+    "fixed_version": "v0.0.0-20220412211240-33da011f77ad",
+    "trace": [
+      {
+        "module": "golang.org/x/sys",
+        "version": "v0.0.0-20200116001909-b77594299b42",
+        "package": "golang.org/x/sys/unix"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3750",
+    "fixed_version": "v1.23.10",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "ReadFile",
+        "position": {
+          "filename": "src/os/file.go",
+          "offset": 22550,
+          "line": 714,
+          "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "loadSystemRoots",
+        "position": {
+          "filename": "src/crypto/x509/root_unix.go",
+          "offset": 1179,
+          "line": 42,
+          "column": 27
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "initSystemRoots",
+        "position": {
+          "filename": "src/crypto/x509/root.go",
+          "offset": 608,
+          "line": 30,
+          "column": 47
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "doSlow",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2485,
+          "line": 74,
+          "column": 4
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "Do",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2349,
+          "line": 65,
+          "column": 11
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "syscall",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/syscall/env_unix.go",
+          "offset": 1519,
+          "line": 70,
+          "column": 12
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/os/env.go",
+          "offset": 2938,
+          "line": 103,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "init",
+        "position": {
+          "filename": "src/net/http/h2_bundle.go",
+          "offset": 113814,
+          "line": 3130,
+          "column": 37
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "init",
+        "position": {
+          "filename": "main.go",
+          "offset": 47,
+          "line": 6,
+          "column": 5
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3373",
+    "fixed_version": "v1.22.11",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "AppendCertsFromPEM",
+        "receiver": "*CertPool",
+        "position": {
+          "filename": "src/crypto/x509/cert_pool.go",
+          "offset": 6451,
+          "line": 207,
+          "column": 20
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "loadSystemRoots",
+        "position": {
+          "filename": "src/crypto/x509/root_unix.go",
+          "offset": 1231,
+          "line": 44,
+          "column": 28
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "initSystemRoots",
+        "position": {
+          "filename": "src/crypto/x509/root.go",
+          "offset": 608,
+          "line": 30,
+          "column": 47
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "doSlow",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2485,
+          "line": 74,
+          "column": 4
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "Do",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2349,
+          "line": 65,
+          "column": 11
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "syscall",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/syscall/env_unix.go",
+          "offset": 1519,
+          "line": 70,
+          "column": 12
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/os/env.go",
+          "offset": 2938,
+          "line": 103,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "init",
+        "position": {
+          "filename": "src/net/http/h2_bundle.go",
+          "offset": 113814,
+          "line": 3130,
+          "column": 37
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "init",
+        "position": {
+          "filename": "main.go",
+          "offset": 47,
+          "line": 6,
+          "column": 5
+        }
       }
     ]
   }
@@ -12508,9 +12743,152 @@
 }
 {
   "finding": {
+    "osv": "GO-2025-3373",
+    "fixed_version": "v1.22.11",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "Error",
+        "receiver": "HostnameError",
+        "position": {
+          "filename": "src/crypto/x509/verify.go",
+          "offset": 3550,
+          "line": 100,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "fmt",
+        "function": "handleMethods",
+        "receiver": "*pp",
+        "position": {
+          "filename": "src/fmt/print.go",
+          "offset": 18243,
+          "line": 667,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "fmt",
+        "function": "printArg",
+        "receiver": "*pp",
+        "position": {
+          "filename": "src/fmt/print.go",
+          "offset": 20092,
+          "line": 749,
+          "column": 22
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "fmt",
+        "function": "doPrintln",
+        "receiver": "*pp",
+        "position": {
+          "filename": "src/fmt/print.go",
+          "offset": 32612,
+          "line": 1223,
+          "column": 13
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "fmt",
+        "function": "Fprintln",
+        "position": {
+          "filename": "src/fmt/print.go",
+          "offset": 9094,
+          "line": 304,
+          "column": 13
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "fmt",
+        "function": "Println",
+        "position": {
+          "filename": "src/fmt/print.go",
+          "offset": 9443,
+          "line": 314,
+          "column": 17
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "main",
+        "position": {
+          "filename": "main.go",
+          "offset": 155,
+          "line": 13,
+          "column": 16
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
     "osv": "GO-2025-3750",
     "fixed_version": "v1.23.10",
     "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "syscall",
+        "function": "Open",
+        "position": {
+          "filename": "src/syscall/syscall_linux.go",
+          "offset": 7688,
+          "line": 271,
+          "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "open",
+        "position": {
+          "filename": "src/os/file_open_unix.go",
+          "offset": 344,
+          "line": 15,
+          "column": 25
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "openFileNolog",
+        "position": {
+          "filename": "src/os/file_unix.go",
+          "offset": 8971,
+          "line": 272,
+          "column": 17
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "OpenFile",
+        "position": {
+          "filename": "src/os/file.go",
+          "offset": 10205,
+          "line": 334,
+          "column": 25
+        }
+      },
       {
         "module": "stdlib",
         "version": "v1.21.13",
@@ -12518,9 +12896,9 @@
         "function": "Open",
         "position": {
           "filename": "src/os/file.go",
-          "offset": 9190,
-          "line": 313,
-          "column": 6
+          "offset": 9241,
+          "line": 314,
+          "column": 17
         }
       },
       {
@@ -12545,232 +12923,6 @@
           "offset": 377,
           "line": 19,
           "column": 19
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "doSlow",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2485,
-          "line": 74,
-          "column": 4
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "Do",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2349,
-          "line": 65,
-          "column": 11
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "syscall",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/syscall/env_unix.go",
-          "offset": 1519,
-          "line": 70,
-          "column": 12
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/os/env.go",
-          "offset": 2938,
-          "line": 103,
-          "column": 24
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "init",
-        "position": {
-          "filename": "src/net/http/h2_bundle.go",
-          "offset": 113814,
-          "line": 3130,
-          "column": 37
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "init",
-        "position": {
-          "filename": "main.go",
-          "offset": 47,
-          "line": 6,
-          "column": 5
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3750",
-    "fixed_version": "v1.23.10",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Remove",
-        "position": {
-          "filename": "src/os/file_unix.go",
-          "offset": 11166,
-          "line": 358,
-          "column": 6
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "mime/multipart",
-        "function": "RemoveAll",
-        "receiver": "*Form",
-        "position": {
-          "filename": "src/mime/multipart/formdata.go",
-          "offset": 6561,
-          "line": 245,
-          "column": 19
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "finishRequest",
-        "receiver": "*response",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 52492,
-          "line": 1678,
-          "column": 32
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "serve",
-        "receiver": "*conn",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 62893,
-          "line": 2020,
-          "column": 18
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "Serve",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 97979,
-          "line": 3091,
-          "column": 3
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 94753,
-          "line": 2990,
-          "column": 18
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 102573,
-          "line": 3244,
-          "column": 30
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "main",
-        "position": {
-          "filename": "main.go",
-          "offset": 659,
-          "line": 31,
-          "column": 34
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3373",
-    "fixed_version": "v1.22.11",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "AppendCertsFromPEM",
-        "receiver": "*CertPool",
-        "position": {
-          "filename": "src/crypto/x509/cert_pool.go",
-          "offset": 6451,
-          "line": 207,
-          "column": 20
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "loadSystemRoots",
-        "position": {
-          "filename": "src/crypto/x509/root_unix.go",
-          "offset": 1231,
-          "line": 44,
-          "column": 28
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "initSystemRoots",
-        "position": {
-          "filename": "src/crypto/x509/root.go",
-          "offset": 608,
-          "line": 30,
-          "column": 47
         }
       },
       {
@@ -13060,134 +13212,221 @@
 }
 {
   "finding": {
-    "osv": "GO-2025-3563",
-    "fixed_version": "v1.23.8",
+    "osv": "GO-2025-3750",
+    "fixed_version": "v1.23.10",
     "trace": [
       {
         "module": "stdlib",
         "version": "v1.21.13",
-        "package": "net/http/internal",
-        "function": "Read",
-        "receiver": "*chunkedReader",
+        "package": "os",
+        "function": "Open",
         "position": {
-          "filename": "src/net/http/internal/chunked.go",
-          "offset": 2851,
-          "line": 97,
-          "column": 26
+          "filename": "src/os/file.go",
+          "offset": 9190,
+          "line": 313,
+          "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net",
+        "function": "open",
+        "position": {
+          "filename": "src/net/parse.go",
+          "offset": 1456,
+          "line": 76,
+          "column": 20
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net",
+        "function": "readServices",
+        "position": {
+          "filename": "src/net/port_unix.go",
+          "offset": 377,
+          "line": 19,
+          "column": 19
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "doSlow",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2485,
+          "line": 74,
+          "column": 4
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "Do",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2349,
+          "line": 65,
+          "column": 11
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "syscall",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/syscall/env_unix.go",
+          "offset": 1519,
+          "line": 70,
+          "column": 12
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/os/env.go",
+          "offset": 2938,
+          "line": 103,
+          "column": 24
         }
       },
       {
         "module": "stdlib",
         "version": "v1.21.13",
         "package": "net/http",
-        "function": "readLocked",
-        "receiver": "*body",
+        "function": "init",
         "position": {
-          "filename": "src/net/http/transfer.go",
-          "offset": 23983,
-          "line": 839,
-          "column": 21
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "Read",
-        "receiver": "*body",
-        "position": {
-          "filename": "src/net/http/transfer.go",
-          "offset": 23843,
-          "line": 831,
-          "column": 21
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "bufio",
-        "function": "fill",
-        "receiver": "*Reader",
-        "position": {
-          "filename": "src/bufio/bufio.go",
-          "offset": 3182,
-          "line": 113,
-          "column": 22
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "bufio",
-        "function": "Peek",
-        "receiver": "*Reader",
-        "position": {
-          "filename": "src/bufio/bufio.go",
-          "offset": 4024,
-          "line": 151,
-          "column": 9
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "serve",
-        "receiver": "*conn",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 63782,
-          "line": 2049,
-          "column": 27
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "Serve",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 97979,
-          "line": 3091,
-          "column": 3
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 94753,
-          "line": 2990,
-          "column": 18
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 102573,
-          "line": 3244,
-          "column": 30
+          "filename": "src/net/http/h2_bundle.go",
+          "offset": 113814,
+          "line": 3130,
+          "column": 37
         }
       },
       {
         "module": "govulncheck-test",
         "package": "govulncheck-test",
-        "function": "main",
+        "function": "init",
         "position": {
           "filename": "main.go",
-          "offset": 659,
-          "line": 31,
-          "column": 34
+          "offset": 47,
+          "line": 6,
+          "column": 5
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3373",
+    "fixed_version": "v1.22.11",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "ParseCertificate",
+        "position": {
+          "filename": "src/crypto/x509/parser.go",
+          "offset": 30627,
+          "line": 984,
+          "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "AppendCertsFromPEM$1$1",
+        "position": {
+          "filename": "src/crypto/x509/cert_pool.go",
+          "offset": 7084,
+          "line": 230,
+          "column": 37
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "doSlow",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2485,
+          "line": 74,
+          "column": 4
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "Do",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2349,
+          "line": 65,
+          "column": 11
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "syscall",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/syscall/env_unix.go",
+          "offset": 1519,
+          "line": 70,
+          "column": 12
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/os/env.go",
+          "offset": 2938,
+          "line": 103,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "init",
+        "position": {
+          "filename": "src/net/http/h2_bundle.go",
+          "offset": 113814,
+          "line": 3130,
+          "column": 37
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "init",
+        "position": {
+          "filename": "main.go",
+          "offset": 47,
+          "line": 6,
+          "column": 5
         }
       }
     ]
@@ -13425,23 +13664,50 @@
         "module": "stdlib",
         "version": "v1.21.13",
         "package": "os",
-        "function": "NewFile",
+        "function": "Remove",
         "position": {
           "filename": "src/os/file_unix.go",
-          "offset": 3676,
-          "line": 105,
+          "offset": 11166,
+          "line": 358,
           "column": 6
         }
       },
       {
         "module": "stdlib",
         "version": "v1.21.13",
-        "package": "os",
-        "function": "init",
+        "package": "mime/multipart",
+        "function": "RemoveAll",
+        "receiver": "*Form",
         "position": {
-          "filename": "src/os/file.go",
-          "offset": 2220,
-          "line": 65,
+          "filename": "src/mime/multipart/formdata.go",
+          "offset": 6561,
+          "line": 245,
+          "column": 19
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "finishRequest",
+        "receiver": "*response",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 52492,
+          "line": 1678,
+          "column": 32
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "serve",
+        "receiver": "*conn",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 62893,
+          "line": 2020,
           "column": 18
         }
       },
@@ -13449,107 +13715,38 @@
         "module": "stdlib",
         "version": "v1.21.13",
         "package": "net/http",
-        "function": "init",
+        "function": "Serve",
+        "receiver": "*Server",
         "position": {
-          "filename": "src/net/http/fs.go",
-          "offset": 332,
-          "line": 19,
-          "column": 2
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "init",
-        "position": {
-          "filename": "main.go",
-          "offset": 47,
-          "line": 6,
-          "column": 5
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3373",
-    "fixed_version": "v1.22.11",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "Error",
-        "receiver": "HostnameError",
-        "position": {
-          "filename": "src/crypto/x509/verify.go",
-          "offset": 3550,
-          "line": 100,
-          "column": 24
+          "filename": "src/net/http/server.go",
+          "offset": 97979,
+          "line": 3091,
+          "column": 3
         }
       },
       {
         "module": "stdlib",
         "version": "v1.21.13",
-        "package": "fmt",
-        "function": "handleMethods",
-        "receiver": "*pp",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "receiver": "*Server",
         "position": {
-          "filename": "src/fmt/print.go",
-          "offset": 18243,
-          "line": 667,
-          "column": 24
+          "filename": "src/net/http/server.go",
+          "offset": 94753,
+          "line": 2990,
+          "column": 18
         }
       },
       {
         "module": "stdlib",
         "version": "v1.21.13",
-        "package": "fmt",
-        "function": "printArg",
-        "receiver": "*pp",
+        "package": "net/http",
+        "function": "ListenAndServe",
         "position": {
-          "filename": "src/fmt/print.go",
-          "offset": 20092,
-          "line": 749,
-          "column": 22
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "fmt",
-        "function": "doPrintln",
-        "receiver": "*pp",
-        "position": {
-          "filename": "src/fmt/print.go",
-          "offset": 32612,
-          "line": 1223,
-          "column": 13
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "fmt",
-        "function": "Fprintln",
-        "position": {
-          "filename": "src/fmt/print.go",
-          "offset": 9094,
-          "line": 304,
-          "column": 13
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "fmt",
-        "function": "Println",
-        "position": {
-          "filename": "src/fmt/print.go",
-          "offset": 9443,
-          "line": 314,
-          "column": 17
+          "filename": "src/net/http/server.go",
+          "offset": 102573,
+          "line": 3244,
+          "column": 30
         }
       },
       {
@@ -13558,243 +13755,9 @@
         "function": "main",
         "position": {
           "filename": "main.go",
-          "offset": 155,
-          "line": 13,
-          "column": 16
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3373",
-    "fixed_version": "v1.22.11",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "ParseCertificate",
-        "position": {
-          "filename": "src/crypto/x509/parser.go",
-          "offset": 30627,
-          "line": 984,
-          "column": 6
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "AppendCertsFromPEM$1$1",
-        "position": {
-          "filename": "src/crypto/x509/cert_pool.go",
-          "offset": 7084,
-          "line": 230,
-          "column": 37
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "doSlow",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2485,
-          "line": 74,
-          "column": 4
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "Do",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2349,
-          "line": 65,
-          "column": 11
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "syscall",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/syscall/env_unix.go",
-          "offset": 1519,
-          "line": 70,
-          "column": 12
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/os/env.go",
-          "offset": 2938,
-          "line": 103,
-          "column": 24
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "init",
-        "position": {
-          "filename": "src/net/http/h2_bundle.go",
-          "offset": 113814,
-          "line": 3130,
-          "column": 37
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "init",
-        "position": {
-          "filename": "main.go",
-          "offset": 47,
-          "line": 6,
-          "column": 5
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3750",
-    "fixed_version": "v1.23.10",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "ReadDir",
-        "position": {
-          "filename": "src/os/dir.go",
-          "offset": 4253,
-          "line": 115,
-          "column": 6
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "readUniqueDirectoryEntries",
-        "position": {
-          "filename": "src/crypto/x509/root_unix.go",
-          "offset": 2240,
-          "line": 87,
-          "column": 26
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "loadSystemRoots",
-        "position": {
-          "filename": "src/crypto/x509/root_unix.go",
-          "offset": 1684,
-          "line": 62,
-          "column": 41
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "initSystemRoots",
-        "position": {
-          "filename": "src/crypto/x509/root.go",
-          "offset": 608,
-          "line": 30,
-          "column": 47
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "doSlow",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2485,
-          "line": 74,
-          "column": 4
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "Do",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2349,
-          "line": 65,
-          "column": 11
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "syscall",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/syscall/env_unix.go",
-          "offset": 1519,
-          "line": 70,
-          "column": 12
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/os/env.go",
-          "offset": 2938,
-          "line": 103,
-          "column": 24
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "init",
-        "position": {
-          "filename": "src/net/http/h2_bundle.go",
-          "offset": 113814,
-          "line": 3130,
-          "column": 37
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "init",
-        "position": {
-          "filename": "main.go",
-          "offset": 47,
-          "line": 6,
-          "column": 5
+          "offset": 659,
+          "line": 31,
+          "column": 34
         }
       }
     ]
@@ -13889,171 +13852,6 @@
           "offset": 7084,
           "line": 230,
           "column": 37
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "doSlow",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2485,
-          "line": 74,
-          "column": 4
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "Do",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2349,
-          "line": 65,
-          "column": 11
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "syscall",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/syscall/env_unix.go",
-          "offset": 1519,
-          "line": 70,
-          "column": 12
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/os/env.go",
-          "offset": 2938,
-          "line": 103,
-          "column": 24
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "init",
-        "position": {
-          "filename": "src/net/http/h2_bundle.go",
-          "offset": 113814,
-          "line": 3130,
-          "column": 37
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "init",
-        "position": {
-          "filename": "main.go",
-          "offset": 47,
-          "line": 6,
-          "column": 5
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3750",
-    "fixed_version": "v1.23.10",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "syscall",
-        "function": "Open",
-        "position": {
-          "filename": "src/syscall/syscall_linux.go",
-          "offset": 7688,
-          "line": 271,
-          "column": 6
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "open",
-        "position": {
-          "filename": "src/os/file_open_unix.go",
-          "offset": 344,
-          "line": 15,
-          "column": 25
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "openFileNolog",
-        "position": {
-          "filename": "src/os/file_unix.go",
-          "offset": 8971,
-          "line": 272,
-          "column": 17
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "OpenFile",
-        "position": {
-          "filename": "src/os/file.go",
-          "offset": 10205,
-          "line": 334,
-          "column": 25
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Open",
-        "position": {
-          "filename": "src/os/file.go",
-          "offset": 9241,
-          "line": 314,
-          "column": 17
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net",
-        "function": "open",
-        "position": {
-          "filename": "src/net/parse.go",
-          "offset": 1456,
-          "line": 76,
-          "column": 20
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net",
-        "function": "readServices",
-        "position": {
-          "filename": "src/net/port_unix.go",
-          "offset": 377,
-          "line": 19,
-          "column": 19
         }
       },
       {
@@ -14341,12 +14139,24 @@
         "module": "stdlib",
         "version": "v1.21.13",
         "package": "os",
-        "function": "ReadFile",
+        "function": "ReadDir",
         "position": {
-          "filename": "src/os/file.go",
-          "offset": 22550,
-          "line": 714,
+          "filename": "src/os/dir.go",
+          "offset": 4253,
+          "line": 115,
           "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "readUniqueDirectoryEntries",
+        "position": {
+          "filename": "src/crypto/x509/root_unix.go",
+          "offset": 2240,
+          "line": 87,
+          "column": 26
         }
       },
       {
@@ -14356,9 +14166,9 @@
         "function": "loadSystemRoots",
         "position": {
           "filename": "src/crypto/x509/root_unix.go",
-          "offset": 1179,
-          "line": 42,
-          "column": 27
+          "offset": 1684,
+          "line": 62,
+          "column": 41
         }
       },
       {
@@ -14433,6 +14243,196 @@
           "offset": 113814,
           "line": 3130,
           "column": 37
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "init",
+        "position": {
+          "filename": "main.go",
+          "offset": 47,
+          "line": 6,
+          "column": 5
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3563",
+    "fixed_version": "v1.23.8",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http/internal",
+        "function": "Read",
+        "receiver": "*chunkedReader",
+        "position": {
+          "filename": "src/net/http/internal/chunked.go",
+          "offset": 2851,
+          "line": 97,
+          "column": 26
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "readLocked",
+        "receiver": "*body",
+        "position": {
+          "filename": "src/net/http/transfer.go",
+          "offset": 23983,
+          "line": 839,
+          "column": 21
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "Read",
+        "receiver": "*body",
+        "position": {
+          "filename": "src/net/http/transfer.go",
+          "offset": 23843,
+          "line": 831,
+          "column": 21
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "bufio",
+        "function": "fill",
+        "receiver": "*Reader",
+        "position": {
+          "filename": "src/bufio/bufio.go",
+          "offset": 3182,
+          "line": 113,
+          "column": 22
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "bufio",
+        "function": "Peek",
+        "receiver": "*Reader",
+        "position": {
+          "filename": "src/bufio/bufio.go",
+          "offset": 4024,
+          "line": 151,
+          "column": 9
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "serve",
+        "receiver": "*conn",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 63782,
+          "line": 2049,
+          "column": 27
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "Serve",
+        "receiver": "*Server",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 97979,
+          "line": 3091,
+          "column": 3
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "receiver": "*Server",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 94753,
+          "line": 2990,
+          "column": 18
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 102573,
+          "line": 3244,
+          "column": 30
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "main",
+        "position": {
+          "filename": "main.go",
+          "offset": 659,
+          "line": 31,
+          "column": 34
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3750",
+    "fixed_version": "v1.23.10",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "NewFile",
+        "position": {
+          "filename": "src/os/file_unix.go",
+          "offset": 3676,
+          "line": 105,
+          "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "init",
+        "position": {
+          "filename": "src/os/file.go",
+          "offset": 2220,
+          "line": 65,
+          "column": 18
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "init",
+        "position": {
+          "filename": "src/net/http/fs.go",
+          "offset": 332,
+          "line": 19,
+          "column": 2
         }
       },
       {
