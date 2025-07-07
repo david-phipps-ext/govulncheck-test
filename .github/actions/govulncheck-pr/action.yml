@@ -127,6 +127,57 @@ runs:
         git remote set-url origin "$repo_url"
         git push origin "$branch"
         
+        # Check if there's already an open PR for govulncheck fixes
+        existing_pr=$(gh pr list --state open --search "govulncheck found" --json number,title,headRefName --jq '.[0].number // empty' 2>/dev/null || echo "")
+        
+        if [[ -n "$existing_pr" ]]; then
+          echo "Found existing open PR #$existing_pr for vulnerability fixes"
+          
+          # Update the existing PR with new information
+          cat > update_body.md << EOF
+        ## 🚨 Updated Vulnerability Scan Report
+        
+        This PR has been updated with the latest [govulncheck](https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck) scan results.
+        
+        **Latest scan branch**: \`$branch\`
+        
+        ### Vulnerabilities Found:
+        
+        $vuln_summary
+        
+        ### Next Steps:
+        1. Review the latest vulnerability report in branch \`$branch\` at \`.govulncheck/latest.json\`
+        2. Compare with previous scan results to see if new vulnerabilities were introduced
+        3. Update the affected dependencies to secure versions
+        4. Run \`govulncheck ./...\` locally to verify fixes
+        5. Close this PR once vulnerabilities are resolved
+        
+        ### Latest Scan Details:
+        - **Scan Date**: $current_date
+        - **Scanner Version**: $scanner_version
+        - **Database Last Modified**: $db_last_modified
+        - **Latest Branch**: $branch
+        - **Vulnerability Count**: $vuln_count
+        
+        ---
+        
+        **Note**: Multiple branches may exist for different scan runs. This PR tracks the overall vulnerability status.
+        EOF
+          
+          # Update existing PR
+          gh pr edit "$existing_pr" \
+            --title "🚨 Security: govulncheck found $vuln_count reachable vulnerabilities (Updated)" \
+            --body-file update_body.md
+          
+          # Add a comment about the new scan
+          echo "🔄 **New scan completed**: Branch \`$branch\` created with $vuln_count vulnerabilities detected on $current_date" | \
+            gh pr comment "$existing_pr" --body-file -
+          
+          echo "Updated existing PR #$existing_pr with latest scan results"
+          
+        else
+          echo "No existing PR found, creating new one..."
+        
         # Try to create PR, fallback to issue if PR creation is not allowed
         if gh pr create \
           --base "${{ inputs.base-branch }}" \
@@ -178,4 +229,6 @@ runs:
             --body-file issue_body.md \
             --label "security,vulnerability,automated" || echo "Issue creation also failed"
         fi
+        
+        fi  # End of the existing PR check
       shell: bash
