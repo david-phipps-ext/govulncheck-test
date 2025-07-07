@@ -10082,6 +10082,247 @@
 {
   "osv": {
     "schema_version": "1.3.1",
+    "id": "GO-2020-0001",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2021-04-14T20:04:52Z",
+    "aliases": [
+      "CVE-2020-36567",
+      "GHSA-6vm3-jj99-7229"
+    ],
+    "summary": "Arbitrary log line injection in github.com/gin-gonic/gin",
+    "details": "The default Formatter for the Logger middleware (LoggerConfig.Formatter), which is included in the Default engine, allows attackers to inject arbitrary log entries by manipulating the request path.",
+    "affected": [
+      {
+        "package": {
+          "name": "github.com/gin-gonic/gin",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.6.0"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "github.com/gin-gonic/gin",
+              "symbols": [
+                "Default",
+                "Logger",
+                "LoggerWithConfig",
+                "LoggerWithFormatter",
+                "LoggerWithWriter"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "FIX",
+        "url": "https://github.com/gin-gonic/gin/pull/2237"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/gin-gonic/gin/commit/a71af9c144f9579f6dbe945341c1df37aaf09c0d"
+      }
+    ],
+    "credits": [
+      {
+        "name": "@thinkerou \u003cthinkerou@gmail.com\u003e"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2020-0001",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2021-0052",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2021-04-14T20:04:52Z",
+    "aliases": [
+      "CVE-2020-28483",
+      "GHSA-h395-qcrw-5vmq"
+    ],
+    "summary": "Inconsistent interpretation of HTTP Requests in github.com/gin-gonic/gin",
+    "details": "Due to improper HTTP header sanitization, a malicious user can spoof their source IP address by setting the X-Forwarded-For header. This may allow a user to bypass IP based restrictions, or obfuscate their true source.",
+    "affected": [
+      {
+        "package": {
+          "name": "github.com/gin-gonic/gin",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.7.7"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "github.com/gin-gonic/gin",
+              "symbols": [
+                "Context.ClientIP",
+                "Context.Next",
+                "Context.RemoteIP",
+                "Engine.HandleContext",
+                "Engine.Run",
+                "Engine.RunFd",
+                "Engine.RunListener",
+                "Engine.RunTLS",
+                "Engine.RunUnix",
+                "Engine.ServeHTTP"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "REPORT",
+        "url": "https://github.com/gin-gonic/gin/issues/2862"
+      },
+      {
+        "type": "REPORT",
+        "url": "https://github.com/gin-gonic/gin/issues/2473"
+      },
+      {
+        "type": "REPORT",
+        "url": "https://github.com/gin-gonic/gin/issues/2232"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/gin-gonic/gin/pull/2844"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/gin-gonic/gin/commit/5929d521715610c9dd14898ebbe1d188d5de8937"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/gin-gonic/gin/pull/2632"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/gin-gonic/gin/commit/bfc8ca285eb46dad60e037d57c545cd260636711"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/gin-gonic/gin/pull/2675"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/gin-gonic/gin/commit/03e5e05ae089bc989f1ca41841f05504d29e3fd9"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/gin-gonic/gin/pull/2474"
+      }
+    ],
+    "credits": [
+      {
+        "name": "@sorenisanerd"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2021-0052",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
+    "id": "GO-2023-1737",
+    "modified": "2024-05-20T16:03:47Z",
+    "published": "2023-05-11T18:59:56Z",
+    "aliases": [
+      "CVE-2023-29401",
+      "GHSA-2c4m-59x9-fr2g"
+    ],
+    "summary": "Improper handling of filenames in Content-Disposition HTTP header in github.com/gin-gonic/gin",
+    "details": "The filename parameter of the Context.FileAttachment function is not properly sanitized. A maliciously crafted filename can cause the Content-Disposition header to be sent with an unexpected filename value or otherwise modify the Content-Disposition header. For example, a filename of \"setup.bat\u0026quot;;x=.txt\" will be sent as a file named \"setup.bat\".\n\nIf the FileAttachment function is called with names provided by an untrusted source, this may permit an attacker to cause a file to be served with a name different than provided. Maliciously crafted attachment file name can modify the Content-Disposition header.",
+    "affected": [
+      {
+        "package": {
+          "name": "github.com/gin-gonic/gin",
+          "ecosystem": "Go"
+        },
+        "ranges": [
+          {
+            "type": "SEMVER",
+            "events": [
+              {
+                "introduced": "1.3.1-0.20190301021747-ccb9e902956d"
+              },
+              {
+                "fixed": "1.9.1"
+              }
+            ]
+          }
+        ],
+        "ecosystem_specific": {
+          "imports": [
+            {
+              "path": "github.com/gin-gonic/gin",
+              "symbols": [
+                "Context.FileAttachment"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "type": "REPORT",
+        "url": "https://github.com/gin-gonic/gin/issues/3555"
+      },
+      {
+        "type": "FIX",
+        "url": "https://github.com/gin-gonic/gin/pull/3556"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/gin-gonic/gin/releases/tag/v1.9.1"
+      }
+    ],
+    "credits": [
+      {
+        "name": "motoyasu-saburi"
+      }
+    ],
+    "database_specific": {
+      "url": "https://pkg.go.dev/vuln/GO-2023-1737",
+      "review_status": "REVIEWED"
+    }
+  }
+}
+{
+  "osv": {
+    "schema_version": "1.3.1",
     "id": "GO-2020-0036",
     "modified": "2024-05-20T16:03:47Z",
     "published": "2021-04-14T20:04:52Z",
@@ -11493,247 +11734,6 @@
   }
 }
 {
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2020-0001",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2021-04-14T20:04:52Z",
-    "aliases": [
-      "CVE-2020-36567",
-      "GHSA-6vm3-jj99-7229"
-    ],
-    "summary": "Arbitrary log line injection in github.com/gin-gonic/gin",
-    "details": "The default Formatter for the Logger middleware (LoggerConfig.Formatter), which is included in the Default engine, allows attackers to inject arbitrary log entries by manipulating the request path.",
-    "affected": [
-      {
-        "package": {
-          "name": "github.com/gin-gonic/gin",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "1.6.0"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "github.com/gin-gonic/gin",
-              "symbols": [
-                "Default",
-                "Logger",
-                "LoggerWithConfig",
-                "LoggerWithFormatter",
-                "LoggerWithWriter"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "FIX",
-        "url": "https://github.com/gin-gonic/gin/pull/2237"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/gin-gonic/gin/commit/a71af9c144f9579f6dbe945341c1df37aaf09c0d"
-      }
-    ],
-    "credits": [
-      {
-        "name": "@thinkerou \u003cthinkerou@gmail.com\u003e"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2020-0001",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2021-0052",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2021-04-14T20:04:52Z",
-    "aliases": [
-      "CVE-2020-28483",
-      "GHSA-h395-qcrw-5vmq"
-    ],
-    "summary": "Inconsistent interpretation of HTTP Requests in github.com/gin-gonic/gin",
-    "details": "Due to improper HTTP header sanitization, a malicious user can spoof their source IP address by setting the X-Forwarded-For header. This may allow a user to bypass IP based restrictions, or obfuscate their true source.",
-    "affected": [
-      {
-        "package": {
-          "name": "github.com/gin-gonic/gin",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "0"
-              },
-              {
-                "fixed": "1.7.7"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "github.com/gin-gonic/gin",
-              "symbols": [
-                "Context.ClientIP",
-                "Context.Next",
-                "Context.RemoteIP",
-                "Engine.HandleContext",
-                "Engine.Run",
-                "Engine.RunFd",
-                "Engine.RunListener",
-                "Engine.RunTLS",
-                "Engine.RunUnix",
-                "Engine.ServeHTTP"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "REPORT",
-        "url": "https://github.com/gin-gonic/gin/issues/2862"
-      },
-      {
-        "type": "REPORT",
-        "url": "https://github.com/gin-gonic/gin/issues/2473"
-      },
-      {
-        "type": "REPORT",
-        "url": "https://github.com/gin-gonic/gin/issues/2232"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/gin-gonic/gin/pull/2844"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/gin-gonic/gin/commit/5929d521715610c9dd14898ebbe1d188d5de8937"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/gin-gonic/gin/pull/2632"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/gin-gonic/gin/commit/bfc8ca285eb46dad60e037d57c545cd260636711"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/gin-gonic/gin/pull/2675"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/gin-gonic/gin/commit/03e5e05ae089bc989f1ca41841f05504d29e3fd9"
-      },
-      {
-        "type": "WEB",
-        "url": "https://github.com/gin-gonic/gin/pull/2474"
-      }
-    ],
-    "credits": [
-      {
-        "name": "@sorenisanerd"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2021-0052",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
-  "osv": {
-    "schema_version": "1.3.1",
-    "id": "GO-2023-1737",
-    "modified": "2024-05-20T16:03:47Z",
-    "published": "2023-05-11T18:59:56Z",
-    "aliases": [
-      "CVE-2023-29401",
-      "GHSA-2c4m-59x9-fr2g"
-    ],
-    "summary": "Improper handling of filenames in Content-Disposition HTTP header in github.com/gin-gonic/gin",
-    "details": "The filename parameter of the Context.FileAttachment function is not properly sanitized. A maliciously crafted filename can cause the Content-Disposition header to be sent with an unexpected filename value or otherwise modify the Content-Disposition header. For example, a filename of \"setup.bat\u0026quot;;x=.txt\" will be sent as a file named \"setup.bat\".\n\nIf the FileAttachment function is called with names provided by an untrusted source, this may permit an attacker to cause a file to be served with a name different than provided. Maliciously crafted attachment file name can modify the Content-Disposition header.",
-    "affected": [
-      {
-        "package": {
-          "name": "github.com/gin-gonic/gin",
-          "ecosystem": "Go"
-        },
-        "ranges": [
-          {
-            "type": "SEMVER",
-            "events": [
-              {
-                "introduced": "1.3.1-0.20190301021747-ccb9e902956d"
-              },
-              {
-                "fixed": "1.9.1"
-              }
-            ]
-          }
-        ],
-        "ecosystem_specific": {
-          "imports": [
-            {
-              "path": "github.com/gin-gonic/gin",
-              "symbols": [
-                "Context.FileAttachment"
-              ]
-            }
-          ]
-        }
-      }
-    ],
-    "references": [
-      {
-        "type": "REPORT",
-        "url": "https://github.com/gin-gonic/gin/issues/3555"
-      },
-      {
-        "type": "FIX",
-        "url": "https://github.com/gin-gonic/gin/pull/3556"
-      },
-      {
-        "type": "WEB",
-        "url": "https://github.com/gin-gonic/gin/releases/tag/v1.9.1"
-      }
-    ],
-    "credits": [
-      {
-        "name": "motoyasu-saburi"
-      }
-    ],
-    "database_specific": {
-      "url": "https://pkg.go.dev/vuln/GO-2023-1737",
-      "review_status": "REVIEWED"
-    }
-  }
-}
-{
   "progress": {
     "message": "Checking the code against the vulnerabilities..."
   }
@@ -11848,6 +11848,30 @@
 }
 {
   "finding": {
+    "osv": "GO-2021-0052",
+    "fixed_version": "v1.7.7",
+    "trace": [
+      {
+        "module": "github.com/gin-gonic/gin",
+        "version": "v1.7.0"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2023-1737",
+    "fixed_version": "v1.9.1",
+    "trace": [
+      {
+        "module": "github.com/gin-gonic/gin",
+        "version": "v1.7.0"
+      }
+    ]
+  }
+}
+{
+  "finding": {
     "osv": "GO-2021-0227",
     "fixed_version": "v0.0.0-20201216223049-8b5274cf687f",
     "trace": [
@@ -11944,24 +11968,13 @@
 }
 {
   "finding": {
-    "osv": "GO-2021-0052",
-    "fixed_version": "v1.7.7",
+    "osv": "GO-2025-3750",
+    "fixed_version": "v1.23.10",
     "trace": [
       {
-        "module": "github.com/gin-gonic/gin",
-        "version": "v1.7.0"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2023-1737",
-    "fixed_version": "v1.9.1",
-    "trace": [
-      {
-        "module": "github.com/gin-gonic/gin",
-        "version": "v1.7.0"
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os"
       }
     ]
   }
@@ -11981,13 +11994,26 @@
 }
 {
   "finding": {
-    "osv": "GO-2025-3750",
-    "fixed_version": "v1.23.10",
+    "osv": "GO-2021-0052",
+    "fixed_version": "v1.7.7",
     "trace": [
       {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os"
+        "module": "github.com/gin-gonic/gin",
+        "version": "v1.7.0",
+        "package": "github.com/gin-gonic/gin"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2023-1737",
+    "fixed_version": "v1.9.1",
+    "trace": [
+      {
+        "module": "github.com/gin-gonic/gin",
+        "version": "v1.7.0",
+        "package": "github.com/gin-gonic/gin"
       }
     ]
   }
@@ -12020,6 +12046,19 @@
 }
 {
   "finding": {
+    "osv": "GO-2025-3563",
+    "fixed_version": "v1.23.8",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http/internal"
+      }
+    ]
+  }
+}
+{
+  "finding": {
     "osv": "GO-2025-3447",
     "fixed_version": "v1.22.12",
     "trace": [
@@ -12046,45 +12085,6 @@
 }
 {
   "finding": {
-    "osv": "GO-2025-3563",
-    "fixed_version": "v1.23.8",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http/internal"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2021-0052",
-    "fixed_version": "v1.7.7",
-    "trace": [
-      {
-        "module": "github.com/gin-gonic/gin",
-        "version": "v1.7.0",
-        "package": "github.com/gin-gonic/gin"
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2023-1737",
-    "fixed_version": "v1.9.1",
-    "trace": [
-      {
-        "module": "github.com/gin-gonic/gin",
-        "version": "v1.7.0",
-        "package": "github.com/gin-gonic/gin"
-      }
-    ]
-  }
-}
-{
-  "finding": {
     "osv": "GO-2024-3106",
     "fixed_version": "v1.22.7",
     "trace": [
@@ -12105,6 +12105,619 @@
         "module": "golang.org/x/sys",
         "version": "v0.0.0-20200116001909-b77594299b42",
         "package": "golang.org/x/sys/unix"
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3750",
+    "fixed_version": "v1.23.10",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "syscall",
+        "function": "Open",
+        "position": {
+          "filename": "src/syscall/syscall_linux.go",
+          "offset": 7688,
+          "line": 271,
+          "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "open",
+        "position": {
+          "filename": "src/os/file_open_unix.go",
+          "offset": 344,
+          "line": 15,
+          "column": 25
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "openFileNolog",
+        "position": {
+          "filename": "src/os/file_unix.go",
+          "offset": 8971,
+          "line": 272,
+          "column": 17
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "OpenFile",
+        "position": {
+          "filename": "src/os/file.go",
+          "offset": 10205,
+          "line": 334,
+          "column": 25
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Open",
+        "position": {
+          "filename": "src/os/file.go",
+          "offset": 9241,
+          "line": 314,
+          "column": 17
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net",
+        "function": "open",
+        "position": {
+          "filename": "src/net/parse.go",
+          "offset": 1456,
+          "line": 76,
+          "column": 20
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net",
+        "function": "readServices",
+        "position": {
+          "filename": "src/net/port_unix.go",
+          "offset": 377,
+          "line": 19,
+          "column": 19
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "doSlow",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2485,
+          "line": 74,
+          "column": 4
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "Do",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2349,
+          "line": 65,
+          "column": 11
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "syscall",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/syscall/env_unix.go",
+          "offset": 1519,
+          "line": 70,
+          "column": 12
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/os/env.go",
+          "offset": 2938,
+          "line": 103,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "init",
+        "position": {
+          "filename": "src/net/http/h2_bundle.go",
+          "offset": 113814,
+          "line": 3130,
+          "column": 37
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "init",
+        "position": {
+          "filename": "main.go",
+          "offset": 47,
+          "line": 6,
+          "column": 5
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3750",
+    "fixed_version": "v1.23.10",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "ReadFile",
+        "position": {
+          "filename": "src/os/file.go",
+          "offset": 22550,
+          "line": 714,
+          "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "loadSystemRoots",
+        "position": {
+          "filename": "src/crypto/x509/root_unix.go",
+          "offset": 1179,
+          "line": 42,
+          "column": 27
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "initSystemRoots",
+        "position": {
+          "filename": "src/crypto/x509/root.go",
+          "offset": 608,
+          "line": 30,
+          "column": 47
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "doSlow",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2485,
+          "line": 74,
+          "column": 4
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "Do",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2349,
+          "line": 65,
+          "column": 11
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "syscall",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/syscall/env_unix.go",
+          "offset": 1519,
+          "line": 70,
+          "column": 12
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/os/env.go",
+          "offset": 2938,
+          "line": 103,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "init",
+        "position": {
+          "filename": "src/net/http/h2_bundle.go",
+          "offset": 113814,
+          "line": 3130,
+          "column": 37
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "init",
+        "position": {
+          "filename": "main.go",
+          "offset": 47,
+          "line": 6,
+          "column": 5
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3750",
+    "fixed_version": "v1.23.10",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Remove",
+        "position": {
+          "filename": "src/os/file_unix.go",
+          "offset": 11166,
+          "line": 358,
+          "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "mime/multipart",
+        "function": "RemoveAll",
+        "receiver": "*Form",
+        "position": {
+          "filename": "src/mime/multipart/formdata.go",
+          "offset": 6561,
+          "line": 245,
+          "column": 19
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "finishRequest",
+        "receiver": "*response",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 52492,
+          "line": 1678,
+          "column": 32
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "serve",
+        "receiver": "*conn",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 62893,
+          "line": 2020,
+          "column": 18
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "Serve",
+        "receiver": "*Server",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 97979,
+          "line": 3091,
+          "column": 3
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "receiver": "*Server",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 94753,
+          "line": 2990,
+          "column": 18
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 102573,
+          "line": 3244,
+          "column": 30
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "main",
+        "position": {
+          "filename": "main.go",
+          "offset": 659,
+          "line": 31,
+          "column": 34
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3447",
+    "fixed_version": "v1.22.12",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/internal/nistec",
+        "function": "ScalarMult",
+        "receiver": "*P256Point",
+        "position": {
+          "filename": "src/crypto/internal/nistec/p256_asm.go",
+          "offset": 13581,
+          "line": 420,
+          "column": 21
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/ecdsa",
+        "function": "verifyNISTEC[*crypto/internal/nistec.P256Point]",
+        "position": {
+          "filename": "src/crypto/ecdsa/ecdsa.go",
+          "offset": 16768,
+          "line": 531,
+          "column": 25
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/ecdsa",
+        "function": "VerifyASN1",
+        "position": {
+          "filename": "src/crypto/ecdsa/ecdsa.go",
+          "offset": 15747,
+          "line": 486,
+          "column": 22
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "verifyHandshakeSignature",
+        "position": {
+          "filename": "src/crypto/tls/auth.go",
+          "offset": 715,
+          "line": 29,
+          "column": 23
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "readServerCertificate",
+        "receiver": "*clientHandshakeStateTLS13",
+        "position": {
+          "filename": "src/crypto/tls/handshake_client_tls13.go",
+          "offset": 16944,
+          "line": 563,
+          "column": 36
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "handshake",
+        "receiver": "*clientHandshakeStateTLS13",
+        "position": {
+          "filename": "src/crypto/tls/handshake_client_tls13.go",
+          "offset": 2295,
+          "line": 96,
+          "column": 36
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "clientHandshake",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/handshake_client.go",
+          "offset": 7980,
+          "line": 263,
+          "column": 22
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "handleRenegotiation",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/conn.go",
+          "offset": 39840,
+          "line": 1275,
+          "column": 39
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "handlePostHandshakeMessage",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/conn.go",
+          "offset": 40207,
+          "line": 1285,
+          "column": 31
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "Read",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/conn.go",
+          "offset": 42796,
+          "line": 1373,
+          "column": 42
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "bufio",
+        "function": "fill",
+        "receiver": "*Reader",
+        "position": {
+          "filename": "src/bufio/bufio.go",
+          "offset": 3182,
+          "line": 113,
+          "column": 22
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "bufio",
+        "function": "Peek",
+        "receiver": "*Reader",
+        "position": {
+          "filename": "src/bufio/bufio.go",
+          "offset": 4024,
+          "line": 151,
+          "column": 9
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "serve",
+        "receiver": "*conn",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 63782,
+          "line": 2049,
+          "column": 27
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "Serve",
+        "receiver": "*Server",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 97979,
+          "line": 3091,
+          "column": 3
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "receiver": "*Server",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 94753,
+          "line": 2990,
+          "column": 18
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 102573,
+          "line": 3244,
+          "column": 30
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "main",
+        "position": {
+          "filename": "main.go",
+          "offset": 659,
+          "line": 31,
+          "column": 34
+        }
       }
     ]
   }
@@ -12341,11 +12954,361 @@
         "module": "stdlib",
         "version": "v1.21.13",
         "package": "os",
-        "function": "ReadFile",
+        "function": "NewFile",
+        "position": {
+          "filename": "src/os/file_unix.go",
+          "offset": 3676,
+          "line": 105,
+          "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "init",
         "position": {
           "filename": "src/os/file.go",
-          "offset": 22550,
-          "line": 714,
+          "offset": 2220,
+          "line": 65,
+          "column": 18
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "init",
+        "position": {
+          "filename": "src/net/http/fs.go",
+          "offset": 332,
+          "line": 19,
+          "column": 2
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "init",
+        "position": {
+          "filename": "main.go",
+          "offset": 47,
+          "line": 6,
+          "column": 5
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3373",
+    "fixed_version": "v1.22.11",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "Verify",
+        "receiver": "*Certificate",
+        "position": {
+          "filename": "src/crypto/x509/verify.go",
+          "offset": 24518,
+          "line": 748,
+          "column": 23
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "verifyServerCertificate",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/handshake_client.go",
+          "offset": 29536,
+          "line": 993,
+          "column": 42
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "readServerCertificate",
+        "receiver": "*clientHandshakeStateTLS13",
+        "position": {
+          "filename": "src/crypto/tls/handshake_client_tls13.go",
+          "offset": 15804,
+          "line": 531,
+          "column": 37
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "handshake",
+        "receiver": "*clientHandshakeStateTLS13",
+        "position": {
+          "filename": "src/crypto/tls/handshake_client_tls13.go",
+          "offset": 2295,
+          "line": 96,
+          "column": 36
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "clientHandshake",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/handshake_client.go",
+          "offset": 7980,
+          "line": 263,
+          "column": 22
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "handleRenegotiation",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/conn.go",
+          "offset": 39840,
+          "line": 1275,
+          "column": 39
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "handlePostHandshakeMessage",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/conn.go",
+          "offset": 40207,
+          "line": 1285,
+          "column": 31
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "Read",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/conn.go",
+          "offset": 42796,
+          "line": 1373,
+          "column": 42
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "bufio",
+        "function": "fill",
+        "receiver": "*Reader",
+        "position": {
+          "filename": "src/bufio/bufio.go",
+          "offset": 3182,
+          "line": 113,
+          "column": 22
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "bufio",
+        "function": "Peek",
+        "receiver": "*Reader",
+        "position": {
+          "filename": "src/bufio/bufio.go",
+          "offset": 4024,
+          "line": 151,
+          "column": 9
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "serve",
+        "receiver": "*conn",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 63782,
+          "line": 2049,
+          "column": 27
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "Serve",
+        "receiver": "*Server",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 97979,
+          "line": 3091,
+          "column": 3
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "receiver": "*Server",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 94753,
+          "line": 2990,
+          "column": 18
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 102573,
+          "line": 3244,
+          "column": 30
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "main",
+        "position": {
+          "filename": "main.go",
+          "offset": 659,
+          "line": 31,
+          "column": 34
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3373",
+    "fixed_version": "v1.22.11",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "Error",
+        "receiver": "HostnameError",
+        "position": {
+          "filename": "src/crypto/x509/verify.go",
+          "offset": 3550,
+          "line": 100,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "fmt",
+        "function": "handleMethods",
+        "receiver": "*pp",
+        "position": {
+          "filename": "src/fmt/print.go",
+          "offset": 18243,
+          "line": 667,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "fmt",
+        "function": "printArg",
+        "receiver": "*pp",
+        "position": {
+          "filename": "src/fmt/print.go",
+          "offset": 20092,
+          "line": 749,
+          "column": 22
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "fmt",
+        "function": "doPrintln",
+        "receiver": "*pp",
+        "position": {
+          "filename": "src/fmt/print.go",
+          "offset": 32612,
+          "line": 1223,
+          "column": 13
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "fmt",
+        "function": "Fprintln",
+        "position": {
+          "filename": "src/fmt/print.go",
+          "offset": 9094,
+          "line": 304,
+          "column": 13
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "fmt",
+        "function": "Println",
+        "position": {
+          "filename": "src/fmt/print.go",
+          "offset": 9443,
+          "line": 314,
+          "column": 17
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "main",
+        "position": {
+          "filename": "main.go",
+          "offset": 155,
+          "line": 13,
+          "column": 16
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3373",
+    "fixed_version": "v1.22.11",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "ParseCertificate",
+        "position": {
+          "filename": "src/crypto/x509/parser.go",
+          "offset": 30627,
+          "line": 984,
           "column": 6
         }
       },
@@ -12353,24 +13316,129 @@
         "module": "stdlib",
         "version": "v1.21.13",
         "package": "crypto/x509",
-        "function": "loadSystemRoots",
+        "function": "AppendCertsFromPEM$1$1",
         "position": {
-          "filename": "src/crypto/x509/root_unix.go",
-          "offset": 1179,
-          "line": 42,
-          "column": 27
+          "filename": "src/crypto/x509/cert_pool.go",
+          "offset": 7084,
+          "line": 230,
+          "column": 37
         }
       },
       {
         "module": "stdlib",
         "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "initSystemRoots",
+        "package": "sync",
+        "function": "doSlow",
+        "receiver": "*Once",
         "position": {
-          "filename": "src/crypto/x509/root.go",
-          "offset": 608,
-          "line": 30,
-          "column": 47
+          "filename": "src/sync/once.go",
+          "offset": 2485,
+          "line": 74,
+          "column": 4
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "Do",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2349,
+          "line": 65,
+          "column": 11
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "syscall",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/syscall/env_unix.go",
+          "offset": 1519,
+          "line": 70,
+          "column": 12
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/os/env.go",
+          "offset": 2938,
+          "line": 103,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "init",
+        "position": {
+          "filename": "src/net/http/h2_bundle.go",
+          "offset": 113814,
+          "line": 3130,
+          "column": 37
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "init",
+        "position": {
+          "filename": "main.go",
+          "offset": 47,
+          "line": 6,
+          "column": 5
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3750",
+    "fixed_version": "v1.23.10",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Open",
+        "position": {
+          "filename": "src/os/file.go",
+          "offset": 9190,
+          "line": 313,
+          "column": 6
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net",
+        "function": "open",
+        "position": {
+          "filename": "src/net/parse.go",
+          "offset": 1456,
+          "line": 76,
+          "column": 20
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net",
+        "function": "readServices",
+        "position": {
+          "filename": "src/net/port_unix.go",
+          "offset": 377,
+          "line": 19,
+          "column": 19
         }
       },
       {
@@ -12660,558 +13728,6 @@
 }
 {
   "finding": {
-    "osv": "GO-2025-3750",
-    "fixed_version": "v1.23.10",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "ReadDir",
-        "position": {
-          "filename": "src/os/dir.go",
-          "offset": 4253,
-          "line": 115,
-          "column": 6
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "readUniqueDirectoryEntries",
-        "position": {
-          "filename": "src/crypto/x509/root_unix.go",
-          "offset": 2240,
-          "line": 87,
-          "column": 26
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "loadSystemRoots",
-        "position": {
-          "filename": "src/crypto/x509/root_unix.go",
-          "offset": 1684,
-          "line": 62,
-          "column": 41
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "initSystemRoots",
-        "position": {
-          "filename": "src/crypto/x509/root.go",
-          "offset": 608,
-          "line": 30,
-          "column": 47
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "doSlow",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2485,
-          "line": 74,
-          "column": 4
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "Do",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2349,
-          "line": 65,
-          "column": 11
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "syscall",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/syscall/env_unix.go",
-          "offset": 1519,
-          "line": 70,
-          "column": 12
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/os/env.go",
-          "offset": 2938,
-          "line": 103,
-          "column": 24
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "init",
-        "position": {
-          "filename": "src/net/http/h2_bundle.go",
-          "offset": 113814,
-          "line": 3130,
-          "column": 37
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "init",
-        "position": {
-          "filename": "main.go",
-          "offset": 47,
-          "line": 6,
-          "column": 5
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3373",
-    "fixed_version": "v1.22.11",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "Verify",
-        "receiver": "*Certificate",
-        "position": {
-          "filename": "src/crypto/x509/verify.go",
-          "offset": 24518,
-          "line": 748,
-          "column": 23
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "verifyServerCertificate",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/handshake_client.go",
-          "offset": 29536,
-          "line": 993,
-          "column": 42
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "readServerCertificate",
-        "receiver": "*clientHandshakeStateTLS13",
-        "position": {
-          "filename": "src/crypto/tls/handshake_client_tls13.go",
-          "offset": 15804,
-          "line": 531,
-          "column": 37
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "handshake",
-        "receiver": "*clientHandshakeStateTLS13",
-        "position": {
-          "filename": "src/crypto/tls/handshake_client_tls13.go",
-          "offset": 2295,
-          "line": 96,
-          "column": 36
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "clientHandshake",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/handshake_client.go",
-          "offset": 7980,
-          "line": 263,
-          "column": 22
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "handleRenegotiation",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/conn.go",
-          "offset": 39840,
-          "line": 1275,
-          "column": 39
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "handlePostHandshakeMessage",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/conn.go",
-          "offset": 40207,
-          "line": 1285,
-          "column": 31
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "Read",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/conn.go",
-          "offset": 42796,
-          "line": 1373,
-          "column": 42
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "bufio",
-        "function": "fill",
-        "receiver": "*Reader",
-        "position": {
-          "filename": "src/bufio/bufio.go",
-          "offset": 3182,
-          "line": 113,
-          "column": 22
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "bufio",
-        "function": "Peek",
-        "receiver": "*Reader",
-        "position": {
-          "filename": "src/bufio/bufio.go",
-          "offset": 4024,
-          "line": 151,
-          "column": 9
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "serve",
-        "receiver": "*conn",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 63782,
-          "line": 2049,
-          "column": 27
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "Serve",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 97979,
-          "line": 3091,
-          "column": 3
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 94753,
-          "line": 2990,
-          "column": 18
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 102573,
-          "line": 3244,
-          "column": 30
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "main",
-        "position": {
-          "filename": "main.go",
-          "offset": 659,
-          "line": 31,
-          "column": 34
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3447",
-    "fixed_version": "v1.22.12",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/internal/nistec",
-        "function": "ScalarMult",
-        "receiver": "*P256Point",
-        "position": {
-          "filename": "src/crypto/internal/nistec/p256_asm.go",
-          "offset": 13581,
-          "line": 420,
-          "column": 21
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/ecdsa",
-        "function": "verifyNISTEC[*crypto/internal/nistec.P256Point]",
-        "position": {
-          "filename": "src/crypto/ecdsa/ecdsa.go",
-          "offset": 16768,
-          "line": 531,
-          "column": 25
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/ecdsa",
-        "function": "VerifyASN1",
-        "position": {
-          "filename": "src/crypto/ecdsa/ecdsa.go",
-          "offset": 15747,
-          "line": 486,
-          "column": 22
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "verifyHandshakeSignature",
-        "position": {
-          "filename": "src/crypto/tls/auth.go",
-          "offset": 715,
-          "line": 29,
-          "column": 23
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "readServerCertificate",
-        "receiver": "*clientHandshakeStateTLS13",
-        "position": {
-          "filename": "src/crypto/tls/handshake_client_tls13.go",
-          "offset": 16944,
-          "line": 563,
-          "column": 36
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "handshake",
-        "receiver": "*clientHandshakeStateTLS13",
-        "position": {
-          "filename": "src/crypto/tls/handshake_client_tls13.go",
-          "offset": 2295,
-          "line": 96,
-          "column": 36
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "clientHandshake",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/handshake_client.go",
-          "offset": 7980,
-          "line": 263,
-          "column": 22
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "handleRenegotiation",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/conn.go",
-          "offset": 39840,
-          "line": 1275,
-          "column": 39
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "handlePostHandshakeMessage",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/conn.go",
-          "offset": 40207,
-          "line": 1285,
-          "column": 31
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "Read",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/conn.go",
-          "offset": 42796,
-          "line": 1373,
-          "column": 42
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "bufio",
-        "function": "fill",
-        "receiver": "*Reader",
-        "position": {
-          "filename": "src/bufio/bufio.go",
-          "offset": 3182,
-          "line": 113,
-          "column": 22
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "bufio",
-        "function": "Peek",
-        "receiver": "*Reader",
-        "position": {
-          "filename": "src/bufio/bufio.go",
-          "offset": 4024,
-          "line": 151,
-          "column": 9
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "serve",
-        "receiver": "*conn",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 63782,
-          "line": 2049,
-          "column": 27
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "Serve",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 97979,
-          "line": 3091,
-          "column": 3
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 94753,
-          "line": 2990,
-          "column": 18
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 102573,
-          "line": 3244,
-          "column": 30
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "main",
-        "position": {
-          "filename": "main.go",
-          "offset": 659,
-          "line": 31,
-          "column": 34
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
     "osv": "GO-2025-3447",
     "fixed_version": "v1.22.12",
     "trace": [
@@ -13386,176 +13902,24 @@
         "module": "stdlib",
         "version": "v1.21.13",
         "package": "os",
-        "function": "Remove",
+        "function": "ReadDir",
         "position": {
-          "filename": "src/os/file_unix.go",
-          "offset": 11166,
-          "line": 358,
+          "filename": "src/os/dir.go",
+          "offset": 4253,
+          "line": 115,
           "column": 6
         }
       },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "mime/multipart",
-        "function": "RemoveAll",
-        "receiver": "*Form",
-        "position": {
-          "filename": "src/mime/multipart/formdata.go",
-          "offset": 6561,
-          "line": 245,
-          "column": 19
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "finishRequest",
-        "receiver": "*response",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 52492,
-          "line": 1678,
-          "column": 32
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "serve",
-        "receiver": "*conn",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 62893,
-          "line": 2020,
-          "column": 18
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "Serve",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 97979,
-          "line": 3091,
-          "column": 3
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 94753,
-          "line": 2990,
-          "column": 18
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 102573,
-          "line": 3244,
-          "column": 30
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "main",
-        "position": {
-          "filename": "main.go",
-          "offset": 659,
-          "line": 31,
-          "column": 34
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3750",
-    "fixed_version": "v1.23.10",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "NewFile",
-        "position": {
-          "filename": "src/os/file_unix.go",
-          "offset": 3676,
-          "line": 105,
-          "column": 6
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "init",
-        "position": {
-          "filename": "src/os/file.go",
-          "offset": 2220,
-          "line": 65,
-          "column": 18
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "init",
-        "position": {
-          "filename": "src/net/http/fs.go",
-          "offset": 332,
-          "line": 19,
-          "column": 2
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "init",
-        "position": {
-          "filename": "main.go",
-          "offset": 47,
-          "line": 6,
-          "column": 5
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3373",
-    "fixed_version": "v1.22.11",
-    "trace": [
       {
         "module": "stdlib",
         "version": "v1.21.13",
         "package": "crypto/x509",
-        "function": "AppendCertsFromPEM",
-        "receiver": "*CertPool",
+        "function": "readUniqueDirectoryEntries",
         "position": {
-          "filename": "src/crypto/x509/cert_pool.go",
-          "offset": 6451,
-          "line": 207,
-          "column": 20
+          "filename": "src/crypto/x509/root_unix.go",
+          "offset": 2240,
+          "line": 87,
+          "column": 26
         }
       },
       {
@@ -13565,9 +13929,9 @@
         "function": "loadSystemRoots",
         "position": {
           "filename": "src/crypto/x509/root_unix.go",
-          "offset": 1231,
-          "line": 44,
-          "column": 28
+          "offset": 1684,
+          "line": 62,
+          "column": 41
         }
       },
       {
@@ -13580,662 +13944,6 @@
           "offset": 608,
           "line": 30,
           "column": 47
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "doSlow",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2485,
-          "line": 74,
-          "column": 4
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "Do",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2349,
-          "line": 65,
-          "column": 11
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "syscall",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/syscall/env_unix.go",
-          "offset": 1519,
-          "line": 70,
-          "column": 12
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/os/env.go",
-          "offset": 2938,
-          "line": 103,
-          "column": 24
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "init",
-        "position": {
-          "filename": "src/net/http/h2_bundle.go",
-          "offset": 113814,
-          "line": 3130,
-          "column": 37
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "init",
-        "position": {
-          "filename": "main.go",
-          "offset": 47,
-          "line": 6,
-          "column": 5
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3373",
-    "fixed_version": "v1.22.11",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "VerifyHostname",
-        "receiver": "*Certificate",
-        "position": {
-          "filename": "src/crypto/x509/verify.go",
-          "offset": 33562,
-          "line": 1084,
-          "column": 23
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "loadSession",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/handshake_client.go",
-          "offset": 10143,
-          "line": 338,
-          "column": 55
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "clientHandshake",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/handshake_client.go",
-          "offset": 5607,
-          "line": 188,
-          "column": 55
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "handleRenegotiation",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/conn.go",
-          "offset": 39840,
-          "line": 1275,
-          "column": 39
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "handlePostHandshakeMessage",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/conn.go",
-          "offset": 40207,
-          "line": 1285,
-          "column": 31
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/tls",
-        "function": "Read",
-        "receiver": "*Conn",
-        "position": {
-          "filename": "src/crypto/tls/conn.go",
-          "offset": 42796,
-          "line": 1373,
-          "column": 42
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "bufio",
-        "function": "fill",
-        "receiver": "*Reader",
-        "position": {
-          "filename": "src/bufio/bufio.go",
-          "offset": 3182,
-          "line": 113,
-          "column": 22
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "bufio",
-        "function": "Peek",
-        "receiver": "*Reader",
-        "position": {
-          "filename": "src/bufio/bufio.go",
-          "offset": 4024,
-          "line": 151,
-          "column": 9
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "serve",
-        "receiver": "*conn",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 63782,
-          "line": 2049,
-          "column": 27
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "Serve",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 97979,
-          "line": 3091,
-          "column": 3
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "receiver": "*Server",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 94753,
-          "line": 2990,
-          "column": 18
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "ListenAndServe",
-        "position": {
-          "filename": "src/net/http/server.go",
-          "offset": 102573,
-          "line": 3244,
-          "column": 30
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "main",
-        "position": {
-          "filename": "main.go",
-          "offset": 659,
-          "line": 31,
-          "column": 34
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3750",
-    "fixed_version": "v1.23.10",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "syscall",
-        "function": "Open",
-        "position": {
-          "filename": "src/syscall/syscall_linux.go",
-          "offset": 7688,
-          "line": 271,
-          "column": 6
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "open",
-        "position": {
-          "filename": "src/os/file_open_unix.go",
-          "offset": 344,
-          "line": 15,
-          "column": 25
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "openFileNolog",
-        "position": {
-          "filename": "src/os/file_unix.go",
-          "offset": 8971,
-          "line": 272,
-          "column": 17
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "OpenFile",
-        "position": {
-          "filename": "src/os/file.go",
-          "offset": 10205,
-          "line": 334,
-          "column": 25
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Open",
-        "position": {
-          "filename": "src/os/file.go",
-          "offset": 9241,
-          "line": 314,
-          "column": 17
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net",
-        "function": "open",
-        "position": {
-          "filename": "src/net/parse.go",
-          "offset": 1456,
-          "line": 76,
-          "column": 20
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net",
-        "function": "readServices",
-        "position": {
-          "filename": "src/net/port_unix.go",
-          "offset": 377,
-          "line": 19,
-          "column": 19
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "doSlow",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2485,
-          "line": 74,
-          "column": 4
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "Do",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2349,
-          "line": 65,
-          "column": 11
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "syscall",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/syscall/env_unix.go",
-          "offset": 1519,
-          "line": 70,
-          "column": 12
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/os/env.go",
-          "offset": 2938,
-          "line": 103,
-          "column": 24
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "init",
-        "position": {
-          "filename": "src/net/http/h2_bundle.go",
-          "offset": 113814,
-          "line": 3130,
-          "column": 37
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "init",
-        "position": {
-          "filename": "main.go",
-          "offset": 47,
-          "line": 6,
-          "column": 5
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3750",
-    "fixed_version": "v1.23.10",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Open",
-        "position": {
-          "filename": "src/os/file.go",
-          "offset": 9190,
-          "line": 313,
-          "column": 6
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net",
-        "function": "open",
-        "position": {
-          "filename": "src/net/parse.go",
-          "offset": 1456,
-          "line": 76,
-          "column": 20
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net",
-        "function": "readServices",
-        "position": {
-          "filename": "src/net/port_unix.go",
-          "offset": 377,
-          "line": 19,
-          "column": 19
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "doSlow",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2485,
-          "line": 74,
-          "column": 4
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "sync",
-        "function": "Do",
-        "receiver": "*Once",
-        "position": {
-          "filename": "src/sync/once.go",
-          "offset": 2349,
-          "line": 65,
-          "column": 11
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "syscall",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/syscall/env_unix.go",
-          "offset": 1519,
-          "line": 70,
-          "column": 12
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "os",
-        "function": "Getenv",
-        "position": {
-          "filename": "src/os/env.go",
-          "offset": 2938,
-          "line": 103,
-          "column": 24
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "net/http",
-        "function": "init",
-        "position": {
-          "filename": "src/net/http/h2_bundle.go",
-          "offset": 113814,
-          "line": 3130,
-          "column": 37
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "init",
-        "position": {
-          "filename": "main.go",
-          "offset": 47,
-          "line": 6,
-          "column": 5
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3373",
-    "fixed_version": "v1.22.11",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "Error",
-        "receiver": "HostnameError",
-        "position": {
-          "filename": "src/crypto/x509/verify.go",
-          "offset": 3550,
-          "line": 100,
-          "column": 24
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "fmt",
-        "function": "handleMethods",
-        "receiver": "*pp",
-        "position": {
-          "filename": "src/fmt/print.go",
-          "offset": 18243,
-          "line": 667,
-          "column": 24
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "fmt",
-        "function": "printArg",
-        "receiver": "*pp",
-        "position": {
-          "filename": "src/fmt/print.go",
-          "offset": 20092,
-          "line": 749,
-          "column": 22
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "fmt",
-        "function": "doPrintln",
-        "receiver": "*pp",
-        "position": {
-          "filename": "src/fmt/print.go",
-          "offset": 32612,
-          "line": 1223,
-          "column": 13
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "fmt",
-        "function": "Fprintln",
-        "position": {
-          "filename": "src/fmt/print.go",
-          "offset": 9094,
-          "line": 304,
-          "column": 13
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "fmt",
-        "function": "Println",
-        "position": {
-          "filename": "src/fmt/print.go",
-          "offset": 9443,
-          "line": 314,
-          "column": 17
-        }
-      },
-      {
-        "module": "govulncheck-test",
-        "package": "govulncheck-test",
-        "function": "main",
-        "position": {
-          "filename": "main.go",
-          "offset": 155,
-          "line": 13,
-          "column": 16
-        }
-      }
-    ]
-  }
-}
-{
-  "finding": {
-    "osv": "GO-2025-3373",
-    "fixed_version": "v1.22.11",
-    "trace": [
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "ParseCertificate",
-        "position": {
-          "filename": "src/crypto/x509/parser.go",
-          "offset": 30627,
-          "line": 984,
-          "column": 6
-        }
-      },
-      {
-        "module": "stdlib",
-        "version": "v1.21.13",
-        "package": "crypto/x509",
-        "function": "AppendCertsFromPEM$1$1",
-        "position": {
-          "filename": "src/crypto/x509/cert_pool.go",
-          "offset": 7084,
-          "line": 230,
-          "column": 37
         }
       },
       {
@@ -14444,6 +14152,298 @@
           "offset": 659,
           "line": 31,
           "column": 34
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3373",
+    "fixed_version": "v1.22.11",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "VerifyHostname",
+        "receiver": "*Certificate",
+        "position": {
+          "filename": "src/crypto/x509/verify.go",
+          "offset": 33562,
+          "line": 1084,
+          "column": 23
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "loadSession",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/handshake_client.go",
+          "offset": 10143,
+          "line": 338,
+          "column": 55
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "clientHandshake",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/handshake_client.go",
+          "offset": 5607,
+          "line": 188,
+          "column": 55
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "handleRenegotiation",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/conn.go",
+          "offset": 39840,
+          "line": 1275,
+          "column": 39
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "handlePostHandshakeMessage",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/conn.go",
+          "offset": 40207,
+          "line": 1285,
+          "column": 31
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/tls",
+        "function": "Read",
+        "receiver": "*Conn",
+        "position": {
+          "filename": "src/crypto/tls/conn.go",
+          "offset": 42796,
+          "line": 1373,
+          "column": 42
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "bufio",
+        "function": "fill",
+        "receiver": "*Reader",
+        "position": {
+          "filename": "src/bufio/bufio.go",
+          "offset": 3182,
+          "line": 113,
+          "column": 22
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "bufio",
+        "function": "Peek",
+        "receiver": "*Reader",
+        "position": {
+          "filename": "src/bufio/bufio.go",
+          "offset": 4024,
+          "line": 151,
+          "column": 9
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "serve",
+        "receiver": "*conn",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 63782,
+          "line": 2049,
+          "column": 27
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "Serve",
+        "receiver": "*Server",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 97979,
+          "line": 3091,
+          "column": 3
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "receiver": "*Server",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 94753,
+          "line": 2990,
+          "column": 18
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "ListenAndServe",
+        "position": {
+          "filename": "src/net/http/server.go",
+          "offset": 102573,
+          "line": 3244,
+          "column": 30
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "main",
+        "position": {
+          "filename": "main.go",
+          "offset": 659,
+          "line": 31,
+          "column": 34
+        }
+      }
+    ]
+  }
+}
+{
+  "finding": {
+    "osv": "GO-2025-3373",
+    "fixed_version": "v1.22.11",
+    "trace": [
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "AppendCertsFromPEM",
+        "receiver": "*CertPool",
+        "position": {
+          "filename": "src/crypto/x509/cert_pool.go",
+          "offset": 6451,
+          "line": 207,
+          "column": 20
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "loadSystemRoots",
+        "position": {
+          "filename": "src/crypto/x509/root_unix.go",
+          "offset": 1231,
+          "line": 44,
+          "column": 28
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "crypto/x509",
+        "function": "initSystemRoots",
+        "position": {
+          "filename": "src/crypto/x509/root.go",
+          "offset": 608,
+          "line": 30,
+          "column": 47
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "doSlow",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2485,
+          "line": 74,
+          "column": 4
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "sync",
+        "function": "Do",
+        "receiver": "*Once",
+        "position": {
+          "filename": "src/sync/once.go",
+          "offset": 2349,
+          "line": 65,
+          "column": 11
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "syscall",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/syscall/env_unix.go",
+          "offset": 1519,
+          "line": 70,
+          "column": 12
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "os",
+        "function": "Getenv",
+        "position": {
+          "filename": "src/os/env.go",
+          "offset": 2938,
+          "line": 103,
+          "column": 24
+        }
+      },
+      {
+        "module": "stdlib",
+        "version": "v1.21.13",
+        "package": "net/http",
+        "function": "init",
+        "position": {
+          "filename": "src/net/http/h2_bundle.go",
+          "offset": 113814,
+          "line": 3130,
+          "column": 37
+        }
+      },
+      {
+        "module": "govulncheck-test",
+        "package": "govulncheck-test",
+        "function": "init",
+        "position": {
+          "filename": "main.go",
+          "offset": 47,
+          "line": 6,
+          "column": 5
         }
       }
     ]
