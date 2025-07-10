@@ -31,7 +31,7 @@ on:
 jobs:
   govulncheck-pr:
     name: 'Go Vulnerability Scan and PR Creation'
-    runs-on: [external-k8s-v2]
+    runs-on: ubuntu-latest
     permissions:
       contents: write      # Required to create branches and commit files
       pull-requests: write # Required to create and update PRs
