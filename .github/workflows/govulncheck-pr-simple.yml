@@ -19,7 +19,7 @@ on:
 jobs:
   govulncheck-pr:
     name: 'govulncheck-pr'
-    runs-on: ubuntu-latest
+    runs-on: [external-k8s-v2]
     permissions:
       contents: write
       pull-requests: write

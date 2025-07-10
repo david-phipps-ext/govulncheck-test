@@ -37,7 +37,7 @@ on:
 jobs:
   govulncheck-pr:
     name: 'Go Vulnerability Scan & PR Creation'
-    runs-on: ubuntu-latest
+    runs-on: [external-k8s-v2]
     
     # Essential permissions for the action to function properly
     permissions:
