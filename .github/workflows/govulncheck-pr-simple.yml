@@ -1,0 +1,37 @@
+name: 'govulncheck-pr'
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly scan on Mondays at 2 AM UTC
+  workflow_dispatch:
+    inputs:
+      base-branch:
+        description: 'Base branch for PR creation'
+        required: false
+        default: 'main'
+  push:
+    branches: [main]
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - '**/*.go'
+
+jobs:
+  govulncheck-pr:
+    name: 'govulncheck-pr'
+    runs-on: [external-k8s-v2]
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run govulncheck and create PR if vulnerable
+        uses: bayer-int/csgda-platform-actions/actions/govulncheck-pr@phipps/govulncheck-pr-tool
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          base-branch: ${{ inputs.base-branch || 'main' }}

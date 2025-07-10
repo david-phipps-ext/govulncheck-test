@@ -1,0 +1,97 @@
+name: 'Go Vulnerability Scan with PR Creation'
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly scan on Mondays at 2 AM UTC
+  workflow_dispatch:
+    inputs:
+      force-scan:
+        description: 'Force scan even if no code changes detected'
+        required: false
+        type: boolean
+        default: false
+      base-branch:
+        description: 'Base branch for PR creation'
+        required: false
+        type: string
+        default: 'main'
+  push:
+    branches: [main]
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - '**/*.go'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - '**/*.go'
+
+jobs:
+  govulncheck-pr:
+    name: 'Go Vulnerability Scan and PR Creation'
+    runs-on: [external-k8s-v2]
+    permissions:
+      contents: write      # Required to create branches and commit files
+      pull-requests: write # Required to create and update PRs
+      issues: write        # Required for fallback issue creation
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for better git operations
+
+      - name: Check if Go files exist
+        id: check-go
+        run: |
+          if find . -name "*.go" -type f | grep -q .; then
+            echo "go-files=true" >> $GITHUB_OUTPUT
+            echo "Go files found, proceeding with vulnerability scan"
+          else
+            echo "go-files=false" >> $GITHUB_OUTPUT
+            echo "No Go files found in repository"
+          fi
+
+      - name: Run govulncheck and create PR if vulnerabilities found
+        if: steps.check-go.outputs.go-files == 'true'
+        uses: bayer-int/csgda-platform-actions/actions/govulncheck-pr@phipps/govulncheck-pr-tool
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          base-branch: ${{ inputs.base-branch || 'main' }}
+
+      - name: Skip scan for non-Go repository
+        if: steps.check-go.outputs.go-files == 'false'
+        run: |
+          echo "::notice::No Go files found in repository, skipping vulnerability scan"
+          echo "This workflow is designed for Go projects only"
+          echo "If this is a Go project, ensure .go files are present in the repository"
+
+      - name: Workflow summary
+        if: always()
+        run: |
+          echo "## Vulnerability Scan Workflow Completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [[ "${{ steps.check-go.outputs.go-files }}" == "true" ]]; then
+            echo "✅ **Status**: Go vulnerability scan executed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Next Steps:" >> $GITHUB_STEP_SUMMARY
+            echo "- Check for any created PRs with title containing 'govulncheck found'" >> $GITHUB_STEP_SUMMARY
+            echo "- If vulnerabilities were found, a PR named \`govulncheck-fixes\` will be created or updated" >> $GITHUB_STEP_SUMMARY
+            echo "- Review the vulnerability report in \`.govulncheck/latest.json\` within the PR" >> $GITHUB_STEP_SUMMARY
+            echo "- Update affected dependencies to secure versions" >> $GITHUB_STEP_SUMMARY
+            echo "- Close the PR once vulnerabilities are resolved" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ **Status**: Skipped - No Go files detected" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "This workflow is specifically designed for Go projects and requires .go files to be present." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Workflow Details:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Base Branch**: ${{ inputs.base-branch || 'main' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Force Scan**: ${{ inputs.force-scan || 'false' }}" >> $GITHUB_STEP_SUMMARY

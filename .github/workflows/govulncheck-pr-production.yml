@@ -1,0 +1,135 @@
+name: 'Go Vulnerability Scanner with PR Automation'
+
+on:
+  schedule:
+    # Run weekly vulnerability scans on Mondays at 2 AM UTC
+    # This ensures regular monitoring even when no code changes occur
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+    # Allow manual execution with optional parameters
+    inputs:
+      base_branch:
+        description: 'Target base branch for PR creation'
+        required: false
+        default: 'main'
+        type: string
+      force_scan:
+        description: 'Force scan execution regardless of file changes'
+        required: false
+        default: false
+        type: boolean
+  push:
+    # Automatically scan when Go-related files change on main branch
+    branches: [main]
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - '**/*.go'
+      - '.github/workflows/govulncheck-pr.yml'  # Re-run if workflow changes
+  pull_request:
+    # Also scan PRs that modify Go files to catch vulnerabilities early
+    branches: [main]
+    paths:
+      - 'go.mod'
+      - 'go.sum'
+      - '**/*.go'
+
+jobs:
+  govulncheck-pr:
+    name: 'Go Vulnerability Scan & PR Creation'
+    runs-on: [external-k8s-v2]
+    
+    # Essential permissions for the action to function properly
+    permissions:
+      contents: write      # Required to create and push to branches
+      pull-requests: write # Required to create and update PRs
+      issues: write        # Required for fallback issue creation
+      security-events: write # Optional: for future security integration
+    
+    # Only run on Go repositories to avoid unnecessary executions
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.head_commit.message, 'go') ||
+      github.event_name == 'pull_request'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history for comprehensive git operations
+          fetch-depth: 0
+          # Use token with sufficient permissions
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Detect Go project
+        id: go-detection
+        run: |
+          echo "Checking for Go project files..."
+          
+          # Check for go.mod file (primary indicator)
+          if [[ -f "go.mod" ]]; then
+            echo "go-project=true" >> $GITHUB_OUTPUT
+            echo "✅ Found go.mod file"
+          # Check for any .go files as fallback
+          elif find . -name "*.go" -type f -not -path "./.git/*" | head -1 | grep -q .; then
+            echo "go-project=true" >> $GITHUB_OUTPUT
+            echo "✅ Found .go files"
+          else
+            echo "go-project=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ No Go project detected"
+          fi
+
+      - name: Execute govulncheck vulnerability scan
+        # Only run if this is a Go project
+        if: steps.go-detection.outputs.go-project == 'true'
+        uses: bayer-int/csgda-platform-actions/actions/govulncheck-pr@phipps/govulncheck-pr-tool
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Use input parameter or default to 'main'
+          base-branch: ${{ inputs.base_branch || 'main' }}
+
+      - name: Summary for non-Go projects
+        if: steps.go-detection.outputs.go-project == 'false'
+        run: |
+          echo "## 📋 Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: ⏭️ Skipped" >> $GITHUB_STEP_SUMMARY
+          echo "**Reason**: No Go project detected in this repository" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 💡 Information" >> $GITHUB_STEP_SUMMARY
+          echo "This workflow is designed specifically for Go projects and requires either:" >> $GITHUB_STEP_SUMMARY
+          echo "- A \`go.mod\` file in the repository root" >> $GITHUB_STEP_SUMMARY
+          echo "- At least one \`.go\` file in the repository" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "If this is a Go project, ensure the required files are present and committed." >> $GITHUB_STEP_SUMMARY
+
+      - name: Success summary for Go projects
+        if: steps.go-detection.outputs.go-project == 'true' && success()
+        run: |
+          echo "## 📋 Vulnerability Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: ✅ Completed Successfully" >> $GITHUB_STEP_SUMMARY
+          echo "**Project Type**: Go" >> $GITHUB_STEP_SUMMARY
+          echo "**Scanner**: govulncheck" >> $GITHUB_STEP_SUMMARY
+          echo "**Base Branch**: ${{ inputs.base_branch || 'main' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔍 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Check for PRs**: Look for PRs with title containing 'govulncheck found'" >> $GITHUB_STEP_SUMMARY
+          echo "2. **Review Results**: If vulnerabilities were found, a PR on branch \`govulncheck-fixes\` will be created/updated" >> $GITHUB_STEP_SUMMARY
+          echo "3. **Take Action**: Review vulnerability details and update dependencies as needed" >> $GITHUB_STEP_SUMMARY
+          echo "4. **Monitor**: The same PR will be updated with subsequent scan results" >> $GITHUB_STEP_SUMMARY
+
+      - name: Failure summary
+        if: failure()
+        run: |
+          echo "## 📋 Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: ❌ Failed" >> $GITHUB_STEP_SUMMARY
+          echo "**Project Type**: ${{ steps.go-detection.outputs.go-project == 'true' && 'Go' || 'Non-Go' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔧 Troubleshooting" >> $GITHUB_STEP_SUMMARY
+          echo "- Verify the repository contains a valid Go project" >> $GITHUB_STEP_SUMMARY
+          echo "- Check that the workflow has required permissions" >> $GITHUB_STEP_SUMMARY
+          echo "- Review the action logs for specific error details" >> $GITHUB_STEP_SUMMARY
+          echo "- Ensure the \`bayer-int/csgda-platform-actions\` repository is accessible" >> $GITHUB_STEP_SUMMARY
